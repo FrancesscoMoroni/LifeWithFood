@@ -7,8 +7,8 @@ const PROXY_CONFIG = [
   {
     context: [
       "/userauthentication",
-      "/weatherforecast",
-      "/home"
+      "/home",
+      "/userlogin"
    ],
     proxyTimeout: 10000,
     target: target,
