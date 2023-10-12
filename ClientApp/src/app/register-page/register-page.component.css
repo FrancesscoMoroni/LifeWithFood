@@ -1,0 +1,12 @@
+.register-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.register-button {
+  color: black !important;
+}
+
+.register-error {
+  color: red;
+}

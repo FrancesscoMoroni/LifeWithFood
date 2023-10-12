@@ -8,7 +8,8 @@ const PROXY_CONFIG = [
     context: [
       "/userauthentication",
       "/home",
-      "/userlogin"
+      "/userlogin",
+      "/userregister"
    ],
     proxyTimeout: 10000,
     target: target,

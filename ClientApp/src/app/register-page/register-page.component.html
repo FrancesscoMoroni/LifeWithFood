@@ -1,1 +1,15 @@
 <p>register-page works!</p>
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <div class="register-form">
+    <mat-form-field appearance="fill">
+      <mat-label>Login</mat-label>
+      <input id="login" type="text" matInput formControlName="login">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Hasło</mat-label>
+      <input id="password" type="password" matInput formControlName="password">
+    </mat-form-field>
+  </div>
+  <button mat-raised-button type="submit">Zarejestruj się</button>
+</form>
+<p class="register-error"> {{ error }} </p>

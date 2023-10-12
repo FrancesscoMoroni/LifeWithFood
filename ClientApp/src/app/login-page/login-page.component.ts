@@ -11,6 +11,9 @@ export class LoginPageComponent {
   private http: HttpClient;
   private baseUrl: string;
 
+  public error: string = "";
+  public test: boolean = true;
+
   loginForm = this.formBuilder.group({
     login: '',
     password: ''
@@ -23,7 +26,13 @@ export class LoginPageComponent {
 
   onSubmit(): void {
     console.warn('Your order has been submitted', this.loginForm.value);
-      this.http.post<any>(this.baseUrl + "userauthentication/userlogin", "").subscribe(data => {
+    this.http.post<any>(this.baseUrl + "userauthentication/userlogin", this.loginForm.value).subscribe(data => {
+      console.log(data);
+      if (data.error !== null) {
+        this.error = data.error;
+        return
+      }
+      localStorage.setItem("jwt", data.jwt);
     });
   }
 }
