@@ -4,17 +4,19 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { HomeComponent } from './home/home.component';
-import { LoginPageComponent } from './login-page/login-page.component';
-import { RegisterPageComponent } from './register-page/register-page.component';
-import { MainPageComponent } from './main-page/main-page.component';
 
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
+import { MatCardModule } from '@angular/material/card';
+
+import { NavMenuComponent } from './nav-menu/nav-menu.component';
+import { LoginPageComponent } from './login-page/login-page.component';
+import { RegisterPageComponent } from './register-page/register-page.component';
+import { MainPageComponent } from './main-page/main-page.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ProfilePageComponent } from './profile-page/profile-page.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
@@ -27,7 +29,6 @@ import { UserFavoriteRecipesPageComponent } from './user-favorite-recipes-page/u
   declarations: [
     AppComponent,
     NavMenuComponent,
-    HomeComponent,
     LoginPageComponent,
     RegisterPageComponent,
     MainPageComponent,
@@ -48,7 +49,9 @@ import { UserFavoriteRecipesPageComponent } from './user-favorite-recipes-page/u
     MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatPaginatorModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]

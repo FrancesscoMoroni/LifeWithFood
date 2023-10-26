@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
-import { HomeComponent } from './home/home.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { RegisterPageComponent } from './register-page/register-page.component';
 import { MainPageComponent } from './main-page/main-page.component';
@@ -11,17 +9,21 @@ import { UserStoreroomPageComponent } from './user-storeroom-page/user-storeroom
 import { UserRecipesPageComponent } from './user-recipes-page/user-recipes-page.component';
 import { UserFavoriteRecipesPageComponent } from './user-favorite-recipes-page/user-favorite-recipes-page.component';
 import { RecipePageComponent } from './recipe-page/recipe-page.component';
+import { AdminPageComponent } from './admin-page/admin-page.component';
+
+import { adminGuardGuard } from './guards/admin-guard.guard';
 import { userGuardGuard } from './guards/user-guard.guard';
 
 const appRout: Routes = [
-  { path: '', component: HomeComponent, pathMatch: 'full' },
+  { path: '', component: MainPageComponent, pathMatch: 'full' },
   { path: 'login-page', component: LoginPageComponent },
-  { path: 'register-page', component: RegisterPageComponent, canActivate: [userGuardGuard], },
+  { path: 'register-page', component: RegisterPageComponent},
   { path: 'main-page', component: MainPageComponent },
   { path: 'recipe-page', component: RecipePageComponent },
-  { path: 'user-favorite-recipes-page', component: UserFavoriteRecipesPageComponent },
-  { path: 'user-recipes-page', component: UserRecipesPageComponent },
-  { path: 'user-storeroom-page', component: UserStoreroomPageComponent },
+  { path: 'user-favorite-recipes-page', component: UserFavoriteRecipesPageComponent, canActivate: [userGuardGuard]},
+  { path: 'user-recipes-page', component: UserRecipesPageComponent, canActivate: [userGuardGuard]},
+  { path: 'user-storeroom-page', component: UserStoreroomPageComponent, canActivate: [userGuardGuard] },
+  { path: 'admin-page', component: AdminPageComponent, canActivate: [adminGuardGuard] },
   { path: '**', component: PageNotFoundComponent},
 ]
 
