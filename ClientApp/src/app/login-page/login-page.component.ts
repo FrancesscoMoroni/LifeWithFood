@@ -1,6 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { UserAuthService } from '../services/user-auth.service';
+import { User } from 'oidc-client';
 
 @Component({
   selector: 'app-login-page',
@@ -8,8 +10,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./login-page.component.css']
 })
 export class LoginPageComponent {
-  private http: HttpClient;
-  private baseUrl: string;
+  private userAuthService: UserAuthService;
 
   public error: string = "";
   public test: boolean = true;
@@ -19,20 +20,12 @@ export class LoginPageComponent {
     password: ''
   });
 
-  constructor(private formBuilder: FormBuilder, http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    this.http = http;
-    this.baseUrl = baseUrl;
+  constructor(private formBuilder: FormBuilder, userAuthService: UserAuthService) {
+    this.userAuthService = userAuthService;
   } 
 
-  onSubmit(): void {
+  async onSubmit() {
     console.warn('Your order has been submitted', this.loginForm.value);
-    this.http.post<any>(this.baseUrl + "userauthentication/userlogin", this.loginForm.value).subscribe(data => {
-      console.log(data);
-      if (data.error !== null) {
-        this.error = data.error;
-        return
-      }
-      localStorage.setItem("jwt", data.jwt);
-    });
+    this.error = await Promise.resolve(this.userAuthService.loginUser(this.loginForm.value));
   }
 }

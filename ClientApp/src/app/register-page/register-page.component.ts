@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { UserAuthService } from '../services/user-auth.service';
 
 @Component({
   selector: 'app-register-page',
@@ -8,8 +9,7 @@ import { FormBuilder } from '@angular/forms';
   styleUrls: ['./register-page.component.css']
 })
 export class RegisterPageComponent {
-  private http: HttpClient;
-  private baseUrl: string;
+  private userAuthService: UserAuthService;
 
   public error: string = "";
   public test: boolean = true;
@@ -19,20 +19,12 @@ export class RegisterPageComponent {
     password: ''
   });
 
-  constructor(private formBuilder: FormBuilder, http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    this.http = http;
-    this.baseUrl = baseUrl;
+  constructor(private formBuilder: FormBuilder, userAuthService: UserAuthService) {
+    this.userAuthService = userAuthService;
   }
 
-  onSubmit(): void {
+  async onSubmit() {
     console.warn('Your order has been submitted', this.registerForm.value);
-    this.http.post<any>(this.baseUrl + "userauthentication/userregister", this.registerForm.value).subscribe(data => {
-      console.log(data);
-      if (data.error !== null) {
-        this.error = data.error;
-        return
-      }
-      localStorage.setItem("jwt", data.jwt);
-    });
+    this.error = await Promise.resolve(this.userAuthService.registerUser(this.registerForm.value));
   }
 }
