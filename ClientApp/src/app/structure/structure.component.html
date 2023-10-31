@@ -1,0 +1,17 @@
+<div>
+  <mat-drawer-container [hasBackdrop]="true">
+    <mat-drawer #drawer class="drawer" position="end">
+      <button mat-mini-fab color="primary" (click)="drawer.toggle()">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+      <app-side-options></app-side-options>
+    </mat-drawer>
+    <mat-drawer-content class="drawer-content">
+      <main>
+        <app-nav-menu></app-nav-menu>
+        <router-outlet></router-outlet>
+      </main>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>
+

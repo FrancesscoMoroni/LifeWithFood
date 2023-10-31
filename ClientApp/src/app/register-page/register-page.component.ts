@@ -24,7 +24,6 @@ export class RegisterPageComponent {
   }
 
   async onSubmit() {
-    console.warn('Your order has been submitted', this.registerForm.value);
     this.error = await Promise.resolve(this.userAuthService.registerUser(this.registerForm.value));
   }
 }

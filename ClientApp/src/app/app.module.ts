@@ -12,6 +12,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { MatCardModule } from '@angular/material/card';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTabsModule } from '@angular/material/tabs';
 
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { LoginPageComponent } from './login-page/login-page.component';
@@ -24,6 +28,8 @@ import { RecipePageComponent } from './recipe-page/recipe-page.component';
 import { UserRecipesPageComponent } from './user-recipes-page/user-recipes-page.component';
 import { UserStoreroomPageComponent } from './user-storeroom-page/user-storeroom-page.component';
 import { UserFavoriteRecipesPageComponent } from './user-favorite-recipes-page/user-favorite-recipes-page.component';
+import { SideOptionsComponent } from './side-options/side-options.component';
+import { StructureComponent } from './structure/structure.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +44,9 @@ import { UserFavoriteRecipesPageComponent } from './user-favorite-recipes-page/u
     RecipePageComponent,
     UserRecipesPageComponent,
     UserStoreroomPageComponent,
-    UserFavoriteRecipesPageComponent
+    UserFavoriteRecipesPageComponent,
+    SideOptionsComponent,
+    StructureComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +59,11 @@ import { UserFavoriteRecipesPageComponent } from './user-favorite-recipes-page/u
     ReactiveFormsModule,
     AppRoutingModule,
     MatPaginatorModule,
-    MatCardModule
+    MatCardModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatTabsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

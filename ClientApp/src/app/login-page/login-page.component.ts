@@ -25,7 +25,6 @@ export class LoginPageComponent {
   } 
 
   async onSubmit() {
-    console.warn('Your order has been submitted', this.loginForm.value);
     this.error = await Promise.resolve(this.userAuthService.loginUser(this.loginForm.value));
   }
 }

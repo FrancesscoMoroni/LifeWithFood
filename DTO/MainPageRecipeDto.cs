@@ -1,6 +1,6 @@
 ﻿namespace LifeWithFood.DTO
 {
-    public class RecipeDto
+    public class MainPageRecipeDto
     {
         public int Id { get; set; } = 0;
         public string Name { get; set; } = String.Empty;

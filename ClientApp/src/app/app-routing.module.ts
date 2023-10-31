@@ -10,19 +10,22 @@ import { UserRecipesPageComponent } from './user-recipes-page/user-recipes-page.
 import { UserFavoriteRecipesPageComponent } from './user-favorite-recipes-page/user-favorite-recipes-page.component';
 import { RecipePageComponent } from './recipe-page/recipe-page.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
+import { ProfilePageComponent } from './profile-page/profile-page.component';
 
 import { adminGuardGuard } from './guards/admin-guard.guard';
 import { userGuardGuard } from './guards/user-guard.guard';
+
 
 const appRout: Routes = [
   { path: '', component: MainPageComponent, pathMatch: 'full' },
   { path: 'login-page', component: LoginPageComponent },
   { path: 'register-page', component: RegisterPageComponent},
   { path: 'main-page', component: MainPageComponent },
-  { path: 'recipe-page', component: RecipePageComponent },
+  { path: 'recipe-page/:id', component: RecipePageComponent },
   { path: 'user-favorite-recipes-page', component: UserFavoriteRecipesPageComponent, canActivate: [userGuardGuard]},
   { path: 'user-recipes-page', component: UserRecipesPageComponent, canActivate: [userGuardGuard]},
   { path: 'user-storeroom-page', component: UserStoreroomPageComponent, canActivate: [userGuardGuard] },
+  { path: 'profile-page', component: ProfilePageComponent, canActivate: [userGuardGuard] },
   { path: 'admin-page', component: AdminPageComponent, canActivate: [adminGuardGuard] },
   { path: '**', component: PageNotFoundComponent},
 ]

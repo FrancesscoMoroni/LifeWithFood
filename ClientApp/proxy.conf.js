@@ -12,7 +12,9 @@ const PROXY_CONFIG = [
       "/userregister",
       "/userauth",
       "/mainpage",
-      "/getpage"
+      "/getpage",
+      "/recipepage",
+      "/getrecipe"
    ],
     proxyTimeout: 10000,
     target: target,

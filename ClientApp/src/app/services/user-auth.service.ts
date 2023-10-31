@@ -48,11 +48,14 @@ export class UserAuthService {
     }
 
     var answear: any;
-    console.log(jwt);
 
     answear = await this.http.post<any>(this.baseUrl + "userauthentication/userauth", authDto, { headers: { 'authorization': 'bearer ' + jwt} }).toPromise();
 
     return true;
+  }
+
+  public logout() {
+    localStorage.removeItem("jwt");
   }
 
 

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DrawerService } from '../services/drawer.service';
 
 @Component({
   selector: 'app-nav-menu',
@@ -6,13 +7,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./nav-menu.component.css']
 })
 export class NavMenuComponent {
-  isExpanded = false;
+  private drawerService: DrawerService;
 
-  collapse() {
-    this.isExpanded = false;
+  constructor(drawerService: DrawerService) {
+    this.drawerService = drawerService;
   }
 
   toggle() {
-    this.isExpanded = !this.isExpanded;
+    this.drawerService.toggle();
   }
 }

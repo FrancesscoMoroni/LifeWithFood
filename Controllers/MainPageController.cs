@@ -20,11 +20,11 @@ namespace LifeWithFood.Controllers
         [Route("getpage")]
         public async Task<ActionResult<List<Recipe>>> GetPage(PaginatorDto paginatorDto)
         {
-            List<RecipeDto> pageList = new List<RecipeDto>();
+            List<MainPageRecipeDto> pageList = new List<MainPageRecipeDto>();
 
             try
             {
-                pageList = _dbcontext.Recipes.Select( s => new RecipeDto { Name = s.Name, Description = s.Description, Id = s.IdRecipe}).Skip(paginatorDto.PageIndex * paginatorDto.PageSize).Take(paginatorDto.PageSize).ToList<RecipeDto>();
+                pageList = _dbcontext.Recipes.Select( s => new MainPageRecipeDto { Name = s.Name, Description = s.Description, Id = s.IdRecipe}).Skip(paginatorDto.PageIndex * paginatorDto.PageSize).Take(paginatorDto.PageSize).ToList<MainPageRecipeDto>();
             } catch
             {
                 return Ok(pageList);

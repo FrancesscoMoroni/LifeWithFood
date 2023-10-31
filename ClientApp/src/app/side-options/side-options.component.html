@@ -1,0 +1,17 @@
+<ul class="margin">
+  <li [routerLinkActive]="['link-active']">
+    <a class="nav-link text-dark" [routerLink]="['/login-page']" (click)="toggle()">Logowanie</a>
+  </li>
+  <li [routerLinkActive]="['link-active']">
+    <a class="nav-link text-dark" [routerLink]="['/register-page']" (click)="toggle()">Rejestracja</a>
+  </li>
+  <li [routerLinkActive]="['link-active']">
+    <a class="nav-link text-dark" [routerLink]="['/profile-page']" (click)="toggle()">Profil</a>
+  </li>
+  <li [routerLinkActive]="['link-active']">
+    <a class="nav-link text-dark" [routerLink]="['/admin-page']" (click)="toggle()">Admin</a>
+  </li>
+  <li [routerLinkActive]="['link-active']">
+    <a class="nav-link text-dark" [routerLink]="['/']" (click)="toggle(); logout();">Wyloguj</a>
+  </li>
+</ul>
