@@ -1,0 +1,24 @@
+<h1 mat-dialog-title>{{ title }}</h1>
+<div mat-dialog-content>
+  <form class="dialog-form" [formGroup]="tagForm">
+    <mat-form-field>
+      <mat-label>Nazwa</mat-label>
+      <input matInput [placeholder]="data.tag.name" formControlName="name" required>
+      <mat-error *ngIf="tagForm.status">Proszę wpisać nazwę</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Priorytet</mat-label>
+      <mat-select [placeholder]="data.tag.priority.toString()" formControlName="priority" required>
+        <mat-option *ngFor="let i of priority" [value]="i.value">
+          {{ i.viewValue }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="tagForm.status">Proszę wybrać priorytet</mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">{{ cancelButtonName }}</button>
+  <button mat-button (click)="onOkClick()"> {{ okButtonName }}</button>
+</div>
+

@@ -14,7 +14,13 @@ const PROXY_CONFIG = [
       "/mainpage",
       "/getpage",
       "/recipepage",
-      "/getrecipe"
+      "/getrecipe",
+      "/admindata",
+      "/getnumberoftags",
+      "/gettags",
+      "/createnewtag",
+      "/edittag",
+
    ],
     proxyTimeout: 10000,
     target: target,

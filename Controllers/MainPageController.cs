@@ -24,7 +24,7 @@ namespace LifeWithFood.Controllers
 
             try
             {
-                pageList = _dbcontext.Recipes.Select( s => new MainPageRecipeDto { Name = s.Name, Description = s.Description, Id = s.IdRecipe}).Skip(paginatorDto.PageIndex * paginatorDto.PageSize).Take(paginatorDto.PageSize).ToList<MainPageRecipeDto>();
+                pageList = _dbcontext.Recipes.Select( s => new MainPageRecipeDto { Name = s.Name, Description = s.Description, Id = s.IdRecipe}).OrderBy(item => item.Id).Skip(paginatorDto.PageIndex * paginatorDto.PageSize).Take(paginatorDto.PageSize).ToList<MainPageRecipeDto>();
             } catch
             {
                 return Ok(pageList);

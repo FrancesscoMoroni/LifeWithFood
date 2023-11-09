@@ -1,0 +1,39 @@
+<h1 mat-dialog-title>{{ title }}</h1>
+<div mat-dialog-content>
+  <form class="dialog-form" [formGroup]="userForm">
+
+    <mat-form-field>
+      <mat-label>Login</mat-label>
+      <input matInput [placeholder]="data.user.login" formControlName="login" required>
+      <mat-error *ngIf="userForm.status">Proszę wpisać login</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Hasło</mat-label>
+      <input matInput [placeholder]="data.user.password" formControlName="password" required>
+      <mat-error *ngIf="userForm.status">Proszę wpisać hasło</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Nazwa</mat-label>
+      <input matInput [placeholder]="data.user.name" formControlName="name" required>
+      <mat-error *ngIf="userForm.status">Proszę wpisać nazwę</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Rola</mat-label>
+      <mat-select [placeholder]="data.user.role.toString()" formControlName="role" required>
+        <mat-option *ngFor="let i of roles" [value]="i.value">
+          {{ i.viewValue }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="userForm.status">Proszę wybrać role</mat-error>
+    </mat-form-field>
+
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">{{ cancelButtonName }}</button>
+  <button mat-button (click)="onOkClick()"> {{ okButtonName }}</button>
+</div>
+

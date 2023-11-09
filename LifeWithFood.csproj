@@ -34,12 +34,29 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\interface\Grocery.ts" />
+    <None Remove="ClientApp\src\app\interface\Recipe.ts" />
+    <None Remove="ClientApp\src\app\interface\Tag.ts" />
+    <None Remove="ClientApp\src\app\interface\User.ts" />
     <None Remove="ClientApp\src\app\models\file.ts" />
     <None Remove="ClientApp\src\app\models\JwtAuth.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\interface\Recipe.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\interface\Grocery.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\interface\User.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\app\interface\Tag.ts" />
   </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>{{ title }}</h1>
+<div mat-dialog-content>
+  <form class="dialog-form" [formGroup]="groceryForm">
+
+    <mat-form-field>
+      <mat-label>Nazwa</mat-label>
+      <input matInput [placeholder]="data.grocery.name" formControlName="name" required>
+      <mat-error *ngIf="groceryForm.status">Proszę wpisać nazwę</mat-error>
+    </mat-form-field>
+
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">{{ cancelButtonName }}</button>
+  <button mat-button (click)="onOkClick()"> {{ okButtonName }}</button>
+</div>
+

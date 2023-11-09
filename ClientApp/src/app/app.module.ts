@@ -16,6 +16,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatTableModule } from '@angular/material/table';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDividerModule } from '@angular/material/divider';
 
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { LoginPageComponent } from './login-page/login-page.component';
@@ -30,6 +34,14 @@ import { UserStoreroomPageComponent } from './user-storeroom-page/user-storeroom
 import { UserFavoriteRecipesPageComponent } from './user-favorite-recipes-page/user-favorite-recipes-page.component';
 import { SideOptionsComponent } from './side-options/side-options.component';
 import { StructureComponent } from './structure/structure.component';
+import { AdminRecipesListComponent } from './admin-recipes-list/admin-recipes-list.component';
+import { AdminTagsListComponent } from './admin-tags-list/admin-tags-list.component';
+import { AdminGroceryListComponent } from './admin-grocery-list/admin-grocery-list.component';
+import { AdminUserListComponent } from './admin-user-list/admin-user-list.component';
+import { AdminRecipeDialogComponent } from './admin-recipe-dialog/admin-recipe-dialog.component';
+import { AdminTagDialogComponent } from './admin-tag-dialog/admin-tag-dialog.component';
+import { AdminUserDialogComponent } from './admin-user-dialog/admin-user-dialog.component';
+import { AdminGroceryDialogComponent } from './admin-grocery-dialog/admin-grocery-dialog.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +58,15 @@ import { StructureComponent } from './structure/structure.component';
     UserStoreroomPageComponent,
     UserFavoriteRecipesPageComponent,
     SideOptionsComponent,
-    StructureComponent
+    StructureComponent,
+    AdminRecipesListComponent,
+    AdminTagsListComponent,
+    AdminGroceryListComponent,
+    AdminUserListComponent,
+    AdminRecipeDialogComponent,
+    AdminTagDialogComponent,
+    AdminUserDialogComponent,
+    AdminGroceryDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +83,11 @@ import { StructureComponent } from './structure/structure.component';
     MatSidenavModule,
     MatToolbarModule,
     MatIconModule,
-    MatTabsModule
+    MatTabsModule,
+    MatTableModule,
+    MatDialogModule,
+    MatSelectModule,
+    MatDividerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
