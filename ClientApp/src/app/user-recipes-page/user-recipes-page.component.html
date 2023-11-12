@@ -1,1 +1,74 @@
-<p>user-recipes-page works!</p>
+<br>
+<button mat-raised-button style="margin-left: 10px" (click)="newRecipe()">Nowy</button>
+<button mat-raised-button style="margin-left: 10px" (click)="refreshTable()">Przeładuj</button>
+<br>
+<br>
+
+<form [formGroup]="filterForm">
+  <mat-form-field>
+    <input matInput placeholder="Nazwa" formControlName="name">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Sortowanie" formControlName="sort">
+      <mat-option *ngFor="let i of sortSelection" [value]="i.value">
+        {{ i.viewValue }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Filtr" formControlName="filtr" multiple>
+      <mat-option *ngFor="let i of tagsSelection" [value]="i.tag.idTag">
+        {{ i.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-raised-button (click)="sortPage()">Szukaj</button>
+</form>
+
+
+<br>
+<br>
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef> ID </th>
+    <td mat-cell *matCellDef="let element"> {{element.idRecipe}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Nazwa </th>
+    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="createDate">
+    <th mat-header-cell *matHeaderCellDef> Data Utworzenia </th>
+    <td mat-cell *matCellDef="let element"> {{element.createDate}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="editDate">
+    <th mat-header-cell *matHeaderCellDef> Data Edycji </th>
+    <td mat-cell *matCellDef="let element"> {{element.editDate}} </td>
+  </ng-container>
+
+  <!--ng-container matColumnDef="creator">
+    <th mat-header-cell *matHeaderCellDef> Twórca </th>
+    <td mat-cell *matCellDef="let element"> {{element.creator}} </td>
+  </!--ng-container-->
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row
+      (click)="editRecipe(row)"
+      *matRowDef="let row; columns: displayedColumns;"></tr>
+
+</table>
+
+<mat-paginator [length]="length"
+               [pageSize]="pageSize"
+               [pageSizeOptions]="pageSizeOptions"
+               [pageIndex]="pageIndex"
+               aria-label="Select page"
+               (page)="handlePageEvent($event)">
+</mat-paginator>

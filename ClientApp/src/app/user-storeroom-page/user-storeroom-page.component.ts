@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./user-storeroom-page.component.css']
 })
 export class UserStoreroomPageComponent {
-
+  panelOpenState = false;
 }

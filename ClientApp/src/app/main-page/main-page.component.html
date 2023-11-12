@@ -1,4 +1,35 @@
 
+<br>
+<br>
+
+<form [formGroup]="filterForm">
+  <mat-form-field>
+    <input matInput placeholder="Nazwa" formControlName="name">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Sortowanie" formControlName="sort">
+      <mat-option *ngFor="let i of sortSelection" [value]="i.value">
+        {{ i.viewValue }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Filtr" formControlName="filtr" multiple>
+      <mat-option *ngFor="let i of tagsSelection" [value]="i.tag.idTag">
+        {{ i.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-raised-button (click)="sortPage()">Szukaj</button>
+</form>
+
+
+<br>
+<br>
+
 <div *ngFor="let item of recipes">
   <mat-card class="recipe-card">
     <mat-card-content>
@@ -7,7 +38,7 @@
       </mat-card-header>
       <mat-card-content>{{item.description}}</mat-card-content>
     </mat-card-content>
-</mat-card>
+  </mat-card>
 </div>
 
 <mat-paginator [length]="length"

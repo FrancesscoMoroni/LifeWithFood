@@ -1,8 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { filter } from 'rxjs';
 import { AdminTagDialogComponent } from '../admin-tag-dialog/admin-tag-dialog.component';
+import { Filter } from '../interface/Filter';
 import { Tag } from '../interface/Tag';
 import { AdminDataService } from '../services/admin-data.service';
 
@@ -13,6 +16,19 @@ import { AdminDataService } from '../services/admin-data.service';
 })
 export class AdminTagsListComponent {
 
+  filterForm = this.fb.group({
+    name: [''],
+    sort: [0],
+    filtr: [0]
+  });
+
+  sortSelection = [
+    { value: 1, viewValue: 'Nazwa ↑' },
+    { value: 2, viewValue: 'Nazwa ↓' },
+    { value: 3, viewValue: 'Priorytet ↑' },
+    { value: 4, viewValue: 'Priorytet ↓' },
+  ]
+
   displayedColumns: string[] = ['id', 'name', 'priority'];
   dataSource = new MatTableDataSource<Tag>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -21,7 +37,7 @@ export class AdminTagsListComponent {
   pageIndex = 0;
   pageSizeOptions = [5, 10, 25];
 
-  constructor(public dialog: MatDialog, public adminDataService: AdminDataService) {
+  constructor(public dialog: MatDialog, public adminDataService: AdminDataService, private fb: FormBuilder) {
     this.getNumberOfTags();
 
     var pageEvent = {
@@ -35,7 +51,17 @@ export class AdminTagsListComponent {
   }
 
   public async handlePageEvent(pageEvent: PageEvent) {
-    var tags = await this.adminDataService.getTagsPage(pageEvent);
+    var filtr: Filter = {
+      name: this.filterForm.value.name!,
+      sort: this.filterForm.value.sort!,
+      filtr: this.filterForm.value.filtr
+    }
+
+    if (filtr.filtr == 0) {
+      filtr.filtr = []
+    }
+
+    var tags = await this.adminDataService.getTagsPage(pageEvent, filtr);
 
     this.dataSource = new MatTableDataSource<Tag>(tags);
   }
@@ -73,5 +99,9 @@ export class AdminTagsListComponent {
 
   openDialog(mode: boolean, tag: Tag): void {
     const dialogRef = this.dialog.open(AdminTagDialogComponent, { data: { mode: mode, tag: tag } });
+  }
+
+  sortPage() {
+    this.refreshTable();
   }
 }

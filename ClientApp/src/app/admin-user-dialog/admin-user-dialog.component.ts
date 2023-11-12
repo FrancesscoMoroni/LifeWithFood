@@ -20,8 +20,8 @@ export class AdminUserDialogComponent {
   title: string = 'Nowy Użytkownik';
 
   roles = [
-    { value: 1, viewValue: 'Użytkownik' },
-    { value: 2, viewValue: 'Admin' }
+    { value: 1, viewValue: 'Admin' },
+    { value: 2, viewValue: 'Użytkownik' }
   ];
 
   userForm = this.fb.group({

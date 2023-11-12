@@ -1,8 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AdminGroceryDialogComponent } from '../admin-grocery-dialog/admin-grocery-dialog.component';
+import { Filter } from '../interface/Filter';
 import { Grocery } from '../interface/Grocery';
 import { AdminDataService } from '../services/admin-data.service';
 
@@ -12,7 +14,7 @@ import { AdminDataService } from '../services/admin-data.service';
   styleUrls: ['./admin-grocery-list.component.css']
 })
 export class AdminGroceryListComponent {
-  displayedColumns: string[] = ['id', 'name'];
+  displayedColumns: string[] = ['id', 'name', 'unit'];
   dataSource = new MatTableDataSource<Grocery>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   length = 50;
@@ -20,7 +22,20 @@ export class AdminGroceryListComponent {
   pageIndex = 0;
   pageSizeOptions = [5, 10, 25];
 
-  constructor(public dialog: MatDialog, public adminDataService: AdminDataService) {
+  filterForm = this.fb.group({
+    name: [''],
+    sort: [0],
+    filtr: [0]
+  });
+
+  sortSelection = [
+    { value: 1, viewValue: 'Nazwa ↑' },
+    { value: 2, viewValue: 'Nazwa ↓' },
+    { value: 3, viewValue: 'Miara ↑' },
+    { value: 4, viewValue: 'Miara ↓' },
+  ]
+
+  constructor(public dialog: MatDialog, public adminDataService: AdminDataService, private fb: FormBuilder) {
     this.getNumberOfGroceries();
 
     var pageEvent = {
@@ -34,7 +49,18 @@ export class AdminGroceryListComponent {
   }
 
   public async handlePageEvent(pageEvent: PageEvent) {
-    var tags = await this.adminDataService.getGroceriesPage(pageEvent);
+
+    var filtr: Filter = {
+      name: this.filterForm.value.name!,
+      sort: this.filterForm.value.sort!,
+      filtr: this.filterForm.value.filtr
+    }
+
+    if (filtr.filtr == 0) {
+      filtr.filtr = []
+    }
+
+    var tags = await this.adminDataService.getGroceriesPage(pageEvent, filtr);
 
     this.dataSource = new MatTableDataSource<Grocery>(tags);
   }
@@ -46,7 +72,8 @@ export class AdminGroceryListComponent {
   newGrocery() {
     var grocery: Grocery = {
       idFoodItem: 0,
-      name: ''
+      name: '',
+      unit: ''
     };
 
     this.openDialog(true, grocery);
@@ -73,5 +100,8 @@ export class AdminGroceryListComponent {
     const dialogRef = this.dialog.open(AdminGroceryDialogComponent, { data: { mode: mode, grocery: grocery } });
   }
 
+  sortPage() {
+    this.refreshTable();
+  }
 
 }

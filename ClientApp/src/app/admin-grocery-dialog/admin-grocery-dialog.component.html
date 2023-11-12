@@ -8,6 +8,12 @@
       <mat-error *ngIf="groceryForm.status">Proszę wpisać nazwę</mat-error>
     </mat-form-field>
 
+    <mat-form-field>
+      <mat-label>Miara</mat-label>
+      <input matInput [placeholder]="data.grocery.unit" formControlName="unit" required>
+      <mat-error *ngIf="groceryForm.status">Proszę wpisać nazwę</mat-error>
+    </mat-form-field>
+
   </form>
 </div>
 <div mat-dialog-actions>

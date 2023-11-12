@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
+import { Filter } from '../interface/Filter';
 import { Tag } from '../interface/Tag';
 
 @Injectable({
@@ -17,10 +18,20 @@ export class AdminDataService {
 
   //Recipes
 
-  public async getRecipesPage(pageEvent: PageEvent) {
+  public async getRecipesPage(pageEvent: PageEvent, filter: Filter) {
     var page: any;
 
-    page = await this.http.post<any>(this.baseUrl + "admindata/getrecipes", pageEvent, { headers: { 'authorization': 'bearer ' + this.getJwt() } }).toPromise();
+    var pageSetting = {
+      length: pageEvent.length,
+      pageIndex: pageEvent.pageIndex,
+      pageSize: pageEvent.pageSize, 
+      previousPageIndex: 0,
+      name: filter.name,
+      sort: filter.sort,
+      filtr: filter.filtr
+    }
+
+    page = await this.http.post<any>(this.baseUrl + "admindata/getrecipes", pageSetting, { headers: { 'authorization': 'bearer ' + this.getJwt() } }).toPromise();
     return page;
   }
 
@@ -33,6 +44,8 @@ export class AdminDataService {
 
   public async createNewRecipe(recipe: any): Promise<string> {
     var answear: any;
+
+    recipe.jwt = this.getJwt();
 
     answear = await this.http.post<any>(this.baseUrl + "admindata/createnewrecipe", recipe, { headers: { 'authorization': 'bearer ' + this.getJwt() } }).toPromise();
 
@@ -57,10 +70,20 @@ export class AdminDataService {
 
   //Groceries
 
-  public async getGroceriesPage(pageEvent: PageEvent) {
+  public async getGroceriesPage(pageEvent: PageEvent, filter: Filter) {
     var page: any;
 
-    page = await this.http.post<any>(this.baseUrl + "admindata/getgroceries", pageEvent, { headers: { 'authorization': 'bearer ' + this.getJwt() } }).toPromise();
+    var pageSetting = {
+      length: pageEvent.length,
+      pageIndex: pageEvent.pageIndex,
+      pageSize: pageEvent.pageSize,
+      previousPageIndex: 0,
+      name: filter.name,
+      sort: filter.sort,
+      filtr: filter.filtr
+    }
+
+    page = await this.http.post<any>(this.baseUrl + "admindata/getgroceries", pageSetting, { headers: { 'authorization': 'bearer ' + this.getJwt() } }).toPromise();
     return page;
   }
 
@@ -97,10 +120,20 @@ export class AdminDataService {
 
   //Tag
 
-  public async getTagsPage(pageEvent: PageEvent) {
+  public async getTagsPage(pageEvent: PageEvent, filter: Filter) {
     var page: any;
 
-    page = await this.http.post<any>(this.baseUrl + "admindata/gettags", pageEvent, { headers: { 'authorization': 'bearer ' + this.getJwt() } }).toPromise();
+    var pageSetting = {
+      length: pageEvent.length,
+      pageIndex: pageEvent.pageIndex,
+      pageSize: pageEvent.pageSize,
+      previousPageIndex: 0,
+      name: filter.name,
+      sort: filter.sort,
+      filtr: filter.filtr
+    }
+
+    page = await this.http.post<any>(this.baseUrl + "admindata/gettags", pageSetting, { headers: { 'authorization': 'bearer ' + this.getJwt() } }).toPromise();
     return page;
   }
 
@@ -137,10 +170,20 @@ export class AdminDataService {
 
   //User
 
-  public async getUsersPage(pageEvent: PageEvent) {
+  public async getUsersPage(pageEvent: PageEvent, filter: Filter) {
     var page: any;
 
-    page = await this.http.post<any>(this.baseUrl + "admindata/getusers", pageEvent, { headers: { 'authorization': 'bearer ' + this.getJwt() } }).toPromise();
+    var pageSetting = {
+      length: pageEvent.length,
+      pageIndex: pageEvent.pageIndex,
+      pageSize: pageEvent.pageSize,
+      previousPageIndex: 0,
+      name: filter.name,
+      sort: filter.sort,
+      filtr: filter.filtr
+    }
+
+    page = await this.http.post<any>(this.baseUrl + "admindata/getusers", pageSetting, { headers: { 'authorization': 'bearer ' + this.getJwt() } }).toPromise();
     return page;
   }
 

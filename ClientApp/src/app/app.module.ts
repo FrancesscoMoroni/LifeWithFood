@@ -20,6 +20,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { LoginPageComponent } from './login-page/login-page.component';
@@ -42,6 +44,10 @@ import { AdminRecipeDialogComponent } from './admin-recipe-dialog/admin-recipe-d
 import { AdminTagDialogComponent } from './admin-tag-dialog/admin-tag-dialog.component';
 import { AdminUserDialogComponent } from './admin-user-dialog/admin-user-dialog.component';
 import { AdminGroceryDialogComponent } from './admin-grocery-dialog/admin-grocery-dialog.component';
+import { AddIngredientDialogComponent } from './add-ingredient-dialog/add-ingredient-dialog.component';
+import { AddTagDialogComponent } from './add-tag-dialog/add-tag-dialog.component';
+import { UserRecipeDialogComponent } from './user-recipe-dialog/user-recipe-dialog.component';
+import { UserStoreroomDialogComponent } from './user-storeroom-dialog/user-storeroom-dialog.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +72,11 @@ import { AdminGroceryDialogComponent } from './admin-grocery-dialog/admin-grocer
     AdminRecipeDialogComponent,
     AdminTagDialogComponent,
     AdminUserDialogComponent,
-    AdminGroceryDialogComponent
+    AdminGroceryDialogComponent,
+    AddIngredientDialogComponent,
+    AddTagDialogComponent,
+    UserRecipeDialogComponent,
+    UserStoreroomDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -87,7 +97,9 @@ import { AdminGroceryDialogComponent } from './admin-grocery-dialog/admin-grocer
     MatTableModule,
     MatDialogModule,
     MatSelectModule,
-    MatDividerModule
+    MatDividerModule,
+    MatListModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent]

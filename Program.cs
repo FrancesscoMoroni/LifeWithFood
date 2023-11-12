@@ -10,6 +10,10 @@ var config = builder.Configuration;
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
+
 
 // Add database contex
 builder.Services.AddDbContext<LifeWithFoodDbContext>(options =>

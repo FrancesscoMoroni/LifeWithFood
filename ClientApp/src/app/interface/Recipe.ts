@@ -6,4 +6,15 @@ export interface Recipe {
   prepTime: number;
   createDate: Date;
   editDate: Date;
+  creator: string;
+  tagsIdTags: [{
+    idTag: number,
+    priority: number,
+    name: string
+  }]
+  listsOfIngredients: [{
+    name: string,
+    quanity: number,
+    groceriesIdFoodItemNavigation: any
+  }]
 }

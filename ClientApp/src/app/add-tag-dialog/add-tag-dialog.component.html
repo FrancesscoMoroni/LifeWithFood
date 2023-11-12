@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>{{ title }}</h1>
+<div mat-dialog-content>
+  <form class="dialog-form" [formGroup]="tagForm">
+    <mat-form-field>
+      <mat-label>Składnik</mat-label>
+      <mat-select formControlName="tag" required>
+        <mat-option *ngFor="let i of tagsSelection" [value]="i.tag">
+          {{ i.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="tagForm.status">Proszę wybrać tag</mat-error>
+    </mat-form-field>
+  </form>
+
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">{{ cancelButtonName }}</button>
+  <button mat-button (click)="onOkClick()"> {{ okButtonName }}</button>
+</div>
+
+

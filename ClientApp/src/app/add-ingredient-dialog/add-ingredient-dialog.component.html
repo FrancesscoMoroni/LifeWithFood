@@ -1,0 +1,31 @@
+<h1 mat-dialog-title>{{ title }}</h1>
+<div mat-dialog-content>
+  <form class="dialog-form" [formGroup]="ingredientForm">
+    <mat-form-field *ngIf="this.data.mode">
+      <mat-label>Składnik</mat-label>
+      <mat-select formControlName="grocery" required>
+        <mat-option *ngFor="let i of ingredientsSelection" [value]="i.grocery">
+          {{ i.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="ingredientForm.status">Proszę wybrać składnik</mat-error>
+    </mat-form-field>
+
+    <div *ngIf="!this.data.mode">
+      {{this.data.ingredient.name}}
+    </div>
+
+    <mat-form-field>
+      <mat-label>Ilość</mat-label>
+      <input matInput formControlName="quantity" required>
+      <mat-error *ngIf="ingredientForm.status">Proszę poprawnie wpisać ilość</mat-error>
+    </mat-form-field>
+  </form>
+
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">{{ cancelButtonName }}</button>
+  <button mat-button (click)="onOkClick()"> {{ okButtonName }}</button>
+</div>
+
+

@@ -20,6 +20,7 @@ const PROXY_CONFIG = [
       "/gettags",
       "/createnewtag",
       "/edittag",
+      "/data"
 
    ],
     proxyTimeout: 10000,

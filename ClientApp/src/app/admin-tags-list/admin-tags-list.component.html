@@ -1,6 +1,26 @@
+<br>
+<br>
 <button mat-raised-button style="margin-left: 10px" (click)="newTag()">Nowy</button>
 <button mat-raised-button style="margin-left: 10px" (click)="refreshTable()">Przeładuj</button>
-<br><br>
+<br>
+<br>
+<form [formGroup]="filterForm">
+  <mat-form-field>
+    <input matInput placeholder="Nazwa" formControlName="name">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Sortowanie" formControlName="sort">
+      <mat-option *ngFor="let i of sortSelection" [value]="i.value">
+        {{ i.viewValue }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-raised-button (click)="sortPage()">Szukaj</button>
+</form>
+
+<br>
+<br>
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
   <ng-container matColumnDef="id">
