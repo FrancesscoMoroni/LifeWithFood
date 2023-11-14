@@ -48,6 +48,7 @@ import { AddIngredientDialogComponent } from './add-ingredient-dialog/add-ingred
 import { AddTagDialogComponent } from './add-tag-dialog/add-tag-dialog.component';
 import { UserRecipeDialogComponent } from './user-recipe-dialog/user-recipe-dialog.component';
 import { UserStoreroomDialogComponent } from './user-storeroom-dialog/user-storeroom-dialog.component';
+import { YesNoDialogComponent } from './yes-no-dialog/yes-no-dialog.component';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import { UserStoreroomDialogComponent } from './user-storeroom-dialog/user-store
     AddIngredientDialogComponent,
     AddTagDialogComponent,
     UserRecipeDialogComponent,
-    UserStoreroomDialogComponent
+    UserStoreroomDialogComponent,
+    YesNoDialogComponent
   ],
   imports: [
     BrowserModule,

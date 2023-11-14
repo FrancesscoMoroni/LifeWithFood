@@ -57,7 +57,6 @@ export class AdminRecipeDialogComponent {
       this.okButtonName = 'Utwórz Nowy';
       this.title = 'Nowy Przepis';
     } else {
-      console.log(data);
       data.recipe.tagsIdTags.forEach(t => {
         this.tagsData.push({
           idTag: t.idTag,
@@ -96,10 +95,6 @@ export class AdminRecipeDialogComponent {
           ingredients: this.ingredientsData
         }
 
-        console.log(this.ingredientsData);
-        console.log(this.tagsData);
-        console.log(this.recipeForm.value);
-        console.log(newRecipe);
         this.adminDataService.createNewRecipe(newRecipe);
       } else {
 
@@ -114,7 +109,6 @@ export class AdminRecipeDialogComponent {
           ingredients: this.ingredientsData
         }
         
-        console.log(editRecipe);
         this.adminDataService.editRecipe(editRecipe);
       }
 

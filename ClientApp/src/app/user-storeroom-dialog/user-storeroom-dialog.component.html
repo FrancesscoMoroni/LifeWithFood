@@ -1,1 +1,43 @@
-<p>user-storeroom-dialog works!</p>
+<h1 mat-dialog-title>{{ title }}</h1>
+<div mat-dialog-content>
+  <form class="dialog-form" [formGroup]="storeroomForm">
+
+    <mat-form-field>
+      <mat-label>Nazwa</mat-label>
+      <input matInput placeholder="T" formControlName="location" required>
+      <mat-error *ngIf="storeroomForm.status">Proszę wpisać nazwę</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Termin ważności</mat-label>
+      <input type="date" matInput placeholder="T" formControlName="expirationDate" required>
+      <mat-error *ngIf="storeroomForm.status">Proszę wpisać termin ważności</mat-error>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="this.data.mode">
+      <mat-label>Składnik</mat-label>
+      <mat-select formControlName="grocery" required>
+        <mat-option *ngFor="let i of ingredientsSelection" [value]="i.grocery">
+          {{ i.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="storeroomForm.status">Proszę wybrać składnik</mat-error>
+    </mat-form-field>
+
+    <div *ngIf="!this.data.mode">
+      TEST
+    </div>
+
+    <mat-form-field>
+      <mat-label>Ilość</mat-label>
+      <input matInput formControlName="quantity" required>
+      <mat-error *ngIf="storeroomForm.status">Proszę poprawnie wpisać ilość</mat-error>
+    </mat-form-field>
+  </form>
+
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">{{ cancelButtonName }}</button>
+  <button mat-button (click)="onOkClick()"> {{ okButtonName }}</button>
+</div>
+

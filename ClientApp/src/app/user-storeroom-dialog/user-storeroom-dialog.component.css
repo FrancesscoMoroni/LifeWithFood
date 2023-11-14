@@ -1,0 +1,8 @@
+.dialog-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.file-input {
+  display: none;
+}

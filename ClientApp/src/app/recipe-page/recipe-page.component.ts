@@ -11,6 +11,7 @@ export class RecipePageComponent {
   private recipePageService: RecipePageService;
 
   public recipeId: number;
+  public favorite: boolean = false;
   public recipeData = {
     'createDate': '',
     'description': '',
@@ -30,12 +31,23 @@ export class RecipePageComponent {
     this.recipeId = activatedRoute.snapshot.params['id'];
     this.recipePageService = recipePageService;
 
+    this.ifFavorite();
     this.getRecipe();
   };
 
+  public async ifFavorite() {
+    this.favorite = await this.recipePageService.ifRecipeIsFavorite(this.recipeId);
+  }
+
   public async getRecipe() {
     this.recipeData = await this.recipePageService.getRecipe(this.recipeId);
-    console.log(this.recipeData);
+  }
+
+  public async makeFavorite(id: number) {
+    
+    await this.recipePageService.menageFovoriteRecipe(this.recipeId);
+
+    this.favorite = !this.favorite;
   }
 
 }
