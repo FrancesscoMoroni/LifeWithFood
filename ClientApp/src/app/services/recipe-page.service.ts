@@ -34,6 +34,34 @@ export class RecipePageService {
     return isFavorite;
   }
 
+  public async addNewRating(newRating: any) {
+    var answear: any;
+
+    answear = await this.http.post<any>(this.baseUrl + "recipepage/addnewrating", newRating, { headers: { 'authorization': 'bearer ' + this.getJwt() } }).toPromise();
+    return answear;
+  }
+
+  public async deleteRating(recipeId: number) {
+    var answear: any;
+
+    answear = await this.http.post<any>(this.baseUrl + "recipepage/deleterating", { id: recipeId }, { headers: { 'authorization': 'bearer ' + this.getJwt() } }).toPromise();
+    return answear;
+  }
+
+  public async getRatings(recipeId: number) {
+    var answear: any;
+
+    answear = await this.http.post<any>(this.baseUrl + "recipepage/getratings", { id: recipeId }, { headers: { 'authorization': 'bearer ' + this.getJwt() } }).toPromise();
+    return answear;
+  }
+
+  public async checkOwnedIngredients(recipeId: number) {
+    var answear: any;
+
+    answear = await this.http.post<any>(this.baseUrl + "recipepage/checkownedingredients", { id: recipeId }, { headers: { 'authorization': 'bearer ' + this.getJwt() } }).toPromise();
+    return answear;
+  }
+
   private getJwt() {
     return localStorage.getItem('jwt') || '';
   }

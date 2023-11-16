@@ -1,4 +1,26 @@
-<p>recipe-page works!</p>
+<button mat-raised-button (click)="checkOnwedIngredients()">Sprawdź magazyn</button>
+<br>
+<br>
 <button mat-raised-button (click)="makeFavorite(recipeId)">Ulubione</button>
 {{ recipeId }}
 {{ recipeData.name }}
+
+<form [formGroup]="ratingForm" class="form">
+  <mat-form-field>
+    <mat-label>Ocena</mat-label>
+    <mat-select formControlName="score" required>
+      <mat-option *ngFor="let i of rating" [value]="i.value">
+        {{ i.viewValue }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="ratingForm.status">Proszę wybrać ocenę</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Komentarz</mat-label>
+    <textarea matInput placeholder="Komentarz" formControlName="comment" required></textarea>
+    <mat-error *ngIf="ratingForm.status">Proszę wpisać komentarz</mat-error>
+  </mat-form-field>
+</form>
+
+<button mat-raised-button (click)="addComment()">Dodaj komentarz</button>
