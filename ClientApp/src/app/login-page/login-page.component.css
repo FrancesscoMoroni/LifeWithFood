@@ -1,12 +1,17 @@
 .login-form {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  margin-left: 20px;
+  margin-top: 20px;
 }
 
 .login-button {
-    color: black !important;
+  margin-left: 20px;
+  margin-top: 20px;
 }
 
 .login-error {
-    color: red;
+  margin-left: 20px;
+  color: red;
 }

@@ -14,7 +14,7 @@ import { UserRecipeDialogComponent } from '../user-recipe-dialog/user-recipe-dia
   styleUrls: ['./user-recipes-page.component.css']
 })
 export class UserRecipesPageComponent {
-  displayedColumns: string[] = ['id', 'name', 'createDate', 'editDate'];
+  displayedColumns: string[] = ['name', 'createDate', 'editDate', 'options'];
   dataSource = new MatTableDataSource<Recipe>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   length = 50;
@@ -132,7 +132,7 @@ export class UserRecipesPageComponent {
   }
 
   openDialog(mode: boolean, recipe: Recipe): void {
-    const dialogRef = this.dialog.open(UserRecipeDialogComponent, { data: { mode: mode, recipe: recipe } });
+    const dialogRef = this.dialog.open(UserRecipeDialogComponent, { width: '650px', data: { mode: mode, recipe: recipe } });
   }
 
   sortPage() {

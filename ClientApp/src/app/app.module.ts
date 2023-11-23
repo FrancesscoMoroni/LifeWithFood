@@ -22,6 +22,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatChipsModule } from '@angular/material/chips';
 
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { LoginPageComponent } from './login-page/login-page.component';
@@ -49,6 +50,8 @@ import { AddTagDialogComponent } from './add-tag-dialog/add-tag-dialog.component
 import { UserRecipeDialogComponent } from './user-recipe-dialog/user-recipe-dialog.component';
 import { UserStoreroomDialogComponent } from './user-storeroom-dialog/user-storeroom-dialog.component';
 import { YesNoDialogComponent } from './yes-no-dialog/yes-no-dialog.component';
+import { WhatYouCanCookDialogComponent } from './what-you-can-cook-dialog/what-you-can-cook-dialog.component';
+import { ShoppingListDialogComponent } from './shopping-list-dialog/shopping-list-dialog.component';
 
 @NgModule({
   declarations: [
@@ -78,7 +81,9 @@ import { YesNoDialogComponent } from './yes-no-dialog/yes-no-dialog.component';
     AddTagDialogComponent,
     UserRecipeDialogComponent,
     UserStoreroomDialogComponent,
-    YesNoDialogComponent
+    YesNoDialogComponent,
+    WhatYouCanCookDialogComponent,
+    ShoppingListDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -101,7 +106,8 @@ import { YesNoDialogComponent } from './yes-no-dialog/yes-no-dialog.component';
     MatSelectModule,
     MatDividerModule,
     MatListModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatChipsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

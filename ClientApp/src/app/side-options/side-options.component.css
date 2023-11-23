@@ -1,4 +1,13 @@
 .margin {
-  margin-top: 10px;
+  margin-top: 15px;
   margin-left: 10px;
+}
+
+.nav-options {
+    display: flex;
+    flex-direction:column;
+}
+
+.nav-button {
+    font-size: 18px
 }

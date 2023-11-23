@@ -14,12 +14,13 @@ import { ProfilePageComponent } from './profile-page/profile-page.component';
 
 import { adminGuardGuard } from './guards/admin-guard.guard';
 import { userGuardGuard } from './guards/user-guard.guard';
+import { loginGuardGuard } from './guards/login-guard.guard';
 
 
 const appRout: Routes = [
   { path: '', component: MainPageComponent, pathMatch: 'full' },
-  { path: 'login-page', component: LoginPageComponent },
-  { path: 'register-page', component: RegisterPageComponent},
+  { path: 'login-page', component: LoginPageComponent, canActivate: [loginGuardGuard]},
+  { path: 'register-page', component: RegisterPageComponent, canActivate: [loginGuardGuard]},
   { path: 'main-page', component: MainPageComponent },
   { path: 'recipe-page/:id', component: RecipePageComponent },
   { path: 'user-favorite-recipes-page', component: UserFavoriteRecipesPageComponent, canActivate: [userGuardGuard]},

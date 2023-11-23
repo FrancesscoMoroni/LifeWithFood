@@ -1,7 +1,4 @@
-<br>
-<br>
-
-<form [formGroup]="filterForm">
+<form class="search-form" [formGroup]="filterForm">
   <mat-form-field>
     <input matInput placeholder="Nazwa" formControlName="name">
   </mat-form-field>
@@ -22,12 +19,9 @@
     </mat-select>
   </mat-form-field>
 
-  <button mat-raised-button (click)="sortPage()">Szukaj</button>
+  <button class="search-button" color="primary" mat-raised-button (click)="sortPage()">Szukaj</button>
 </form>
 
-
-<br>
-<br>
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
   <ng-container matColumnDef="name">

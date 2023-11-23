@@ -43,15 +43,30 @@ export class UserAuthService {
     var jwt = localStorage.getItem('jwt') || '';
 
     var authDto = {
-      'Jwt': jwt,
       'Role': role
+    }
+
+    if (jwt == '') {
+      return false;
     }
 
     var answear: any;
 
     answear = await this.http.post<any>(this.baseUrl + "userauthentication/userauth", authDto, { headers: { 'authorization': 'bearer ' + jwt} }).toPromise();
 
-    return true;
+    return answear;
+  }
+
+  public async checkRole() {
+    for (let i = 1; i <= 2; i++) {
+      let hasRole = await this.userAuthorization(i.toString());
+
+      if (hasRole) {
+        return i;
+      }
+    }
+
+    return 0;
   }
 
   public logout() {

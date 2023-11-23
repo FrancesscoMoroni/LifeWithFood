@@ -10,17 +10,17 @@
 
     <mat-form-field>
       <mat-label>Opis</mat-label>
-      <textarea matInput [placeholder]="data.recipe.description" formControlName="description" required></textarea>
+      <textarea matInput cdkTextareaAutosize [placeholder]="data.recipe.description" formControlName="description" required></textarea>
       <mat-error *ngIf="recipeForm.status">Proszę wpisać opis</mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Instrukcje</mat-label>
-      <textarea matInput [placeholder]="data.recipe.instruction" formControlName="instruction" required></textarea>
+      <textarea matInput cdkTextareaAutosize [placeholder]="data.recipe.instruction" formControlName="instruction" required></textarea>
       <mat-error *ngIf="recipeForm.status">Proszę wpisać instrukcje</mat-error>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field class="prep-time-input">
       <mat-label>Czas przygotowania (min)</mat-label>
       <input matInput [placeholder]="data.recipe.prepTime.toString()" formControlName="prepTime" required>
       <mat-error *ngIf="recipeForm.status">Proszę wpisać czas przygotowania</mat-error>
@@ -73,7 +73,7 @@
 
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">{{ cancelButtonName }}</button>
-  <button mat-button (click)="onOkClick()"> {{ okButtonName }}</button>
+  <button mat-raised-button color="primary" (click)="onNoClick()">{{ cancelButtonName }}</button>
+  <button mat-raised-button color="primary" (click)="onOkClick()"> {{ okButtonName }}</button>
 </div>
 

@@ -8,6 +8,7 @@ import { Recipe } from '../interface/Recipe';
 import { Filter } from '../interface/Filter';
 import { AdminDataService } from '../services/admin-data.service';
 import { DataService } from '../services/data-service.service';
+import { YesNoDialogComponent } from '../yes-no-dialog/yes-no-dialog.component';
 
 @Component({
   selector: 'admin-recipes-list',
@@ -15,7 +16,7 @@ import { DataService } from '../services/data-service.service';
   styleUrls: ['./admin-recipes-list.component.css']
 })
 export class AdminRecipesListComponent {
-  displayedColumns: string[] = ['id', 'name', 'createDate', 'editDate'];
+  displayedColumns: string[] = ['id', 'name', 'createDate', 'editDate', 'options'];
   dataSource = new MatTableDataSource<Recipe>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   length = 50;
@@ -133,7 +134,17 @@ export class AdminRecipesListComponent {
   }
 
   openDialog(mode: boolean, recipe: Recipe): void {
-    const dialogRef = this.dialog.open(AdminRecipeDialogComponent, { data: { mode: mode, recipe: recipe } });
+    const dialogRef = this.dialog.open(AdminRecipeDialogComponent, { width: '650px', data: { mode: mode, recipe: recipe } });
+  }
+
+  deleteRecipe(id: number) {
+    const dialogRef = this.dialog.open(YesNoDialogComponent, { data: { title: 'usunąć ten przepis?' } });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.adminDataService.deleteRecipe(id);
+      }
+    }); 
   }
 
   sortPage() {

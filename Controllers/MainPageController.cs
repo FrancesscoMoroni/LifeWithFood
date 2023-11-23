@@ -4,6 +4,7 @@ using LifeWithFood.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Linq;
 
 namespace LifeWithFood.Controllers
 {
@@ -20,9 +21,9 @@ namespace LifeWithFood.Controllers
 
         [HttpPost]
         [Route("getpage")]
-        public async Task<ActionResult<List<Recipe>>> GetPage(PaginatorDto paginatorDto)
+        public async Task<ActionResult<List<RecipeCardDto>>> GetPage(PaginatorDto paginatorDto)
         {
-            List<MainPageRecipeDto> pageList = new List<MainPageRecipeDto>();
+            List<RecipeCardDto> pageList = new List<RecipeCardDto>();
             var query = _dbcontext.Recipes.AsQueryable();
 
             try
@@ -68,10 +69,20 @@ namespace LifeWithFood.Controllers
                         query = query.OrderBy(r => r.IdRecipe);
                         break;
                 }
-                pageList = query.Select(s => new MainPageRecipeDto { Name = s.Name, Description = s.Description, Id = s.IdRecipe })
+                pageList = query.Select(s => new RecipeCardDto {
+                        Name = s.Name,
+                        Description = s.Description,
+                        Id = s.IdRecipe,
+                        PrepTime = s.PrepTime,
+                        Tags = s.TagsIdTags.Select(t => new TagDto
+                        {
+                            Name = t.Name,
+                            Priority = t.Priority
+                        }).OrderBy(t => t.Priority).ToList()
+                    })
                     .Skip(paginatorDto.PageIndex * paginatorDto.PageSize)
                     .Take(paginatorDto.PageSize)
-                    .ToList<MainPageRecipeDto>();
+                    .ToList<RecipeCardDto>();
 
             } catch
             {

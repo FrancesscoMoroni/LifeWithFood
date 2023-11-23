@@ -19,12 +19,12 @@ CREATE TABLE Recipes (
   editDate DATE NULL,
   Users_idUser INT NOT NULL,
   PRIMARY KEY (idRecipe),
-  INDEX fk_Recipes_Users2_idx (Users_idUser ASC),
-  CONSTRAINT fk_Ratings_Users2
+  INDEX fk_Recipes_Users1_idx (Users_idUser ASC),
+  CONSTRAINT fk_Recipes_User1
     FOREIGN KEY (Users_idUser)
     REFERENCES Users (idUser)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
 
 CREATE TABLE Ratings (
   idRating INT NOT NULL IDENTITY,
@@ -39,13 +39,13 @@ CREATE TABLE Ratings (
   CONSTRAINT fk_Ratings_Users1
     FOREIGN KEY (Users_idUser)
     REFERENCES Users (idUser)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
   CONSTRAINT fk_Ratings_Recipes1
     FOREIGN KEY (Recipes_idRecipe)
     REFERENCES Recipes (idRecipe)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
 
 
 CREATE TABLE Groceries (
@@ -70,8 +70,8 @@ CREATE TABLE ListsOfIngredients (
   CONSTRAINT fk_ListsOfIngredients_Recipes1
     FOREIGN KEY (Recipes_idRecipe)
     REFERENCES Recipes (idRecipe)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
 
 
 CREATE TABLE OwnedGroceries (
@@ -92,8 +92,8 @@ CREATE TABLE OwnedGroceries (
   CONSTRAINT fk_OwnedGroceries_Groceries1
     FOREIGN KEY (Groceries_idFoodItem)
     REFERENCES Groceries (idFoodItem)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
 
 
 CREATE TABLE Tags (
@@ -116,8 +116,8 @@ CREATE TABLE RecipesTags (
   CONSTRAINT fk_RecipesTags_Recipes1
     FOREIGN KEY (Recipes_idRecipe)
     REFERENCES Recipes (idRecipe)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
 
 
 CREATE TABLE Images (
@@ -129,8 +129,8 @@ CREATE TABLE Images (
   CONSTRAINT fk_Images_Recipes1
     FOREIGN KEY (Recipes_idRecipe)
     REFERENCES Recipes (idRecipe)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
 
 
 CREATE TABLE FavoriteRecipes (
@@ -142,10 +142,10 @@ CREATE TABLE FavoriteRecipes (
   CONSTRAINT fk_Users_has_Recipes_Users1
     FOREIGN KEY (Users_idUser)
     REFERENCES Users (idUser)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
   CONSTRAINT fk_Users_has_Recipes_Recipes1
     FOREIGN KEY (Recipes_idRecipe)
     REFERENCES Recipes (idRecipe)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);

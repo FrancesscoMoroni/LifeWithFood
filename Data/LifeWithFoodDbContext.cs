@@ -40,7 +40,7 @@ public partial class LifeWithFoodDbContext : DbContext
     {
         modelBuilder.Entity<Grocery>(entity =>
         {
-            entity.HasKey(e => e.IdFoodItem).HasName("PK__Grocerie__09949FB34AAB3941");
+            entity.HasKey(e => e.IdFoodItem).HasName("PK__Grocerie__09949FB32487AE67");
 
             entity.Property(e => e.IdFoodItem).HasColumnName("idFoodItem");
             entity.Property(e => e.Name)
@@ -56,7 +56,7 @@ public partial class LifeWithFoodDbContext : DbContext
 
         modelBuilder.Entity<Image>(entity =>
         {
-            entity.HasKey(e => new { e.IdImage, e.RecipesIdRecipe }).HasName("PK__Images__10346276D35676A0");
+            entity.HasKey(e => new { e.IdImage, e.RecipesIdRecipe }).HasName("PK__Images__10346276D3BF89B1");
 
             entity.HasIndex(e => e.RecipesIdRecipe, "fk_Images_Recipes1_idx");
 
@@ -71,13 +71,12 @@ public partial class LifeWithFoodDbContext : DbContext
 
             entity.HasOne(d => d.RecipesIdRecipeNavigation).WithMany(p => p.Images)
                 .HasForeignKey(d => d.RecipesIdRecipe)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_Images_Recipes1");
         });
 
         modelBuilder.Entity<ListsOfIngredient>(entity =>
         {
-            entity.HasKey(e => new { e.GroceriesIdFoodItem, e.RecipesIdRecipe }).HasName("PK__ListsOfI__1A13F7DCE7A4DB55");
+            entity.HasKey(e => new { e.GroceriesIdFoodItem, e.RecipesIdRecipe }).HasName("PK__ListsOfI__1A13F7DC94610DB3");
 
             entity.HasIndex(e => e.GroceriesIdFoodItem, "fk_ListsOfIngredients_Groceries1_idx");
 
@@ -93,13 +92,12 @@ public partial class LifeWithFoodDbContext : DbContext
 
             entity.HasOne(d => d.RecipesIdRecipeNavigation).WithMany(p => p.ListsOfIngredients)
                 .HasForeignKey(d => d.RecipesIdRecipe)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_ListsOfIngredients_Recipes1");
         });
 
         modelBuilder.Entity<OwnedGrocery>(entity =>
         {
-            entity.HasKey(e => new { e.IdOwnedFoodItem, e.UsersIdUser, e.GroceriesIdFoodItem }).HasName("PK__OwnedGro__C940255C885E5D9E");
+            entity.HasKey(e => new { e.IdOwnedFoodItem, e.UsersIdUser, e.GroceriesIdFoodItem }).HasName("PK__OwnedGro__C940255C6A8DA0D8");
 
             entity.HasIndex(e => e.GroceriesIdFoodItem, "fk_OwnedGroceries_Groceries1_idx");
 
@@ -121,7 +119,6 @@ public partial class LifeWithFoodDbContext : DbContext
 
             entity.HasOne(d => d.GroceriesIdFoodItemNavigation).WithMany(p => p.OwnedGroceries)
                 .HasForeignKey(d => d.GroceriesIdFoodItem)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_OwnedGroceries_Groceries1");
 
             entity.HasOne(d => d.UsersIdUserNavigation).WithMany(p => p.OwnedGroceries)
@@ -131,7 +128,7 @@ public partial class LifeWithFoodDbContext : DbContext
 
         modelBuilder.Entity<Rating>(entity =>
         {
-            entity.HasKey(e => new { e.IdRating, e.UsersIdUser, e.RecipesIdRecipe }).HasName("PK__Ratings__83B6C4F17ADA9D52");
+            entity.HasKey(e => new { e.IdRating, e.UsersIdUser, e.RecipesIdRecipe }).HasName("PK__Ratings__83B6C4F1678DAFA6");
 
             entity.HasIndex(e => e.RecipesIdRecipe, "fk_Ratings_Recipes1_idx");
 
@@ -152,19 +149,19 @@ public partial class LifeWithFoodDbContext : DbContext
 
             entity.HasOne(d => d.RecipesIdRecipeNavigation).WithMany(p => p.Ratings)
                 .HasForeignKey(d => d.RecipesIdRecipe)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_Ratings_Recipes1");
 
             entity.HasOne(d => d.UsersIdUserNavigation).WithMany(p => p.Ratings)
                 .HasForeignKey(d => d.UsersIdUser)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_Ratings_Users1");
         });
 
         modelBuilder.Entity<Recipe>(entity =>
         {
-            entity.HasKey(e => e.IdRecipe).HasName("PK__Recipes__7BA2E0835D4623E0");
+            entity.HasKey(e => e.IdRecipe).HasName("PK__Recipes__7BA2E083D612495F");
 
-            entity.HasIndex(e => e.UsersIdUser, "fk_Recipes_Users2_idx");
+            entity.HasIndex(e => e.UsersIdUser, "fk_Recipes_Users1_idx");
 
             entity.Property(e => e.IdRecipe).HasColumnName("idRecipe");
             entity.Property(e => e.CreateDate)
@@ -188,13 +185,12 @@ public partial class LifeWithFoodDbContext : DbContext
 
             entity.HasOne(d => d.UsersIdUserNavigation).WithMany(p => p.Recipes)
                 .HasForeignKey(d => d.UsersIdUser)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_Ratings_Users2");
+                .HasConstraintName("fk_Recipes_User1");
         });
 
         modelBuilder.Entity<Tag>(entity =>
         {
-            entity.HasKey(e => e.IdTag).HasName("PK__Tags__020FEDB855C5239A");
+            entity.HasKey(e => e.IdTag).HasName("PK__Tags__020FEDB8970568BC");
 
             entity.Property(e => e.IdTag).HasColumnName("idTag");
             entity.Property(e => e.Name)
@@ -208,14 +204,13 @@ public partial class LifeWithFoodDbContext : DbContext
                     "RecipesTag",
                     r => r.HasOne<Recipe>().WithMany()
                         .HasForeignKey("RecipesIdRecipe")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("fk_RecipesTags_Recipes1"),
                     l => l.HasOne<Tag>().WithMany()
                         .HasForeignKey("TagsIdTag")
                         .HasConstraintName("fk_RecipesTags_Tags1"),
                     j =>
                     {
-                        j.HasKey("TagsIdTag", "RecipesIdRecipe").HasName("PK__RecipesT__002714D0AC7121C6");
+                        j.HasKey("TagsIdTag", "RecipesIdRecipe").HasName("PK__RecipesT__002714D0D84B06E8");
                         j.ToTable("RecipesTags");
                         j.HasIndex(new[] { "RecipesIdRecipe" }, "fk_RecipesTags_Recipes1_idx");
                         j.IndexerProperty<int>("TagsIdTag").HasColumnName("Tags_idTag");
@@ -225,7 +220,7 @@ public partial class LifeWithFoodDbContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.IdUser).HasName("PK__Users__3717C982E7E7B17B");
+            entity.HasKey(e => e.IdUser).HasName("PK__Users__3717C98268E0D36B");
 
             entity.Property(e => e.IdUser).HasColumnName("idUser");
             entity.Property(e => e.CreateDate)
@@ -250,14 +245,14 @@ public partial class LifeWithFoodDbContext : DbContext
                     "FavoriteRecipe",
                     r => r.HasOne<Recipe>().WithMany()
                         .HasForeignKey("RecipesIdRecipe")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("fk_Users_has_Recipes_Recipes1"),
                     l => l.HasOne<User>().WithMany()
                         .HasForeignKey("UsersIdUser")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("fk_Users_has_Recipes_Users1"),
                     j =>
                     {
-                        j.HasKey("UsersIdUser", "RecipesIdRecipe").HasName("PK__Favorite__946672E1CFEE9A4E");
+                        j.HasKey("UsersIdUser", "RecipesIdRecipe").HasName("PK__Favorite__946672E1190DC3DB");
                         j.ToTable("FavoriteRecipes");
                         j.HasIndex(new[] { "RecipesIdRecipe" }, "fk_Users_has_Recipes_Recipes1_idx");
                         j.HasIndex(new[] { "UsersIdUser" }, "fk_Users_has_Recipes_Users1_idx");

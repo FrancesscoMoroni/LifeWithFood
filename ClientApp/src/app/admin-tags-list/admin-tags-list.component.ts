@@ -8,6 +8,7 @@ import { AdminTagDialogComponent } from '../admin-tag-dialog/admin-tag-dialog.co
 import { Filter } from '../interface/Filter';
 import { Tag } from '../interface/Tag';
 import { AdminDataService } from '../services/admin-data.service';
+import { YesNoDialogComponent } from '../yes-no-dialog/yes-no-dialog.component';
 
 @Component({
   selector: 'admin-tags-list',
@@ -29,7 +30,7 @@ export class AdminTagsListComponent {
     { value: 4, viewValue: 'Priorytet ↓' },
   ]
 
-  displayedColumns: string[] = ['id', 'name', 'priority'];
+  displayedColumns: string[] = ['id', 'name', 'priority', 'options'];
   dataSource = new MatTableDataSource<Tag>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   length = 50;
@@ -99,6 +100,16 @@ export class AdminTagsListComponent {
 
   openDialog(mode: boolean, tag: Tag): void {
     const dialogRef = this.dialog.open(AdminTagDialogComponent, { data: { mode: mode, tag: tag } });
+  }
+
+  deleteTag(id: number) {
+    const dialogRef = this.dialog.open(YesNoDialogComponent, { data: { title: 'usunąć ten tag?' } });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.adminDataService.deleteTag(id);
+      }
+    });
   }
 
   sortPage() {

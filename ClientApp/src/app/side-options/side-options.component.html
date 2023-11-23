@@ -1,17 +1,7 @@
-<ul class="margin">
-  <li [routerLinkActive]="['link-active']">
-    <a class="nav-link text-dark" [routerLink]="['/login-page']" (click)="toggle()">Logowanie</a>
-  </li>
-  <li [routerLinkActive]="['link-active']">
-    <a class="nav-link text-dark" [routerLink]="['/register-page']" (click)="toggle()">Rejestracja</a>
-  </li>
-  <li [routerLinkActive]="['link-active']">
-    <a class="nav-link text-dark" [routerLink]="['/profile-page']" (click)="toggle()">Profil</a>
-  </li>
-  <li [routerLinkActive]="['link-active']">
-    <a class="nav-link text-dark" [routerLink]="['/admin-page']" (click)="toggle()">Admin</a>
-  </li>
-  <li [routerLinkActive]="['link-active']">
-    <a class="nav-link text-dark" [routerLink]="['/']" (click)="toggle(); logout();">Wyloguj</a>
-  </li>
-</ul>
+<div class="nav-options">
+  <button *ngIf="role == 0" mat-button class="nav-button" (click)="goTo('/login-page')">Logowanie</button>
+  <button *ngIf="role == 0" mat-button class="nav-button" (click)="goTo('/register-page')">Rejestracja</button>
+  <button *ngIf="(role == 1) || (role == 2)" mat-button class="nav-button" (click)="goTo('/profile-page')">Profil</button>
+  <button *ngIf="role == 1" mat-button class="nav-button" (click)="goTo('/admin-page')">Admin</button>
+  <button *ngIf="(role == 1) || (role == 2)" mat-button class="nav-button" (click)="logout(); goTo('/');">Wyloguj</button>
+</div>

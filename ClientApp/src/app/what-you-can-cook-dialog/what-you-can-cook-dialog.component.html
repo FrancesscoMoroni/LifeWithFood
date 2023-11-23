@@ -1,0 +1,49 @@
+<h1 mat-dialog-title>{{ title }}</h1>
+<div mat-dialog-content>
+  <form [formGroup]="filterForm" class="search-form">
+    <mat-form-field>
+      <input matInput placeholder="Mak. Przepisów" formControlName="amount">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select placeholder="Filtr" formControlName="filtr" multiple>
+        <mat-option *ngFor="let i of tagsSelection" [value]="i.tag.idTag">
+          {{ i.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-raised-button class="search-button" color="primary" (click)="sort()">Szukaj</button>
+  </form>
+  <br>
+  <div *ngFor="let item of recipes">
+    <mat-card class="recipe-card">
+      <mat-card-content>
+        <mat-card-header>
+          <a class="nav-link text-dark" [routerLink]='["/recipe-page",item.recipeCard.id]' (click)="onCloseClick()">{{item.recipeCard.name}}</a>
+        </mat-card-header>
+        <mat-card-content>
+          <p>
+            {{item.recipeCard.description}}
+          </p>
+          <div class="bottom-elements">
+            <div class="compatibility"> {{item.compatibility}} %</div>
+            <mat-icon class="time-icon" color="primary" fontIcon="alarm icon"></mat-icon>
+            <div class="time"> {{item.recipeCard.prepTime}} min</div>
+            <div class="tags" *ngFor="let t of item.recipeCard.tags">
+              <mat-chip-set color="primary">
+                <mat-chip>{{t.name}}</mat-chip>
+              </mat-chip-set>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="onCloseClick()">Zamknij</button>
+</div>
+
+
+

@@ -3,14 +3,14 @@
   <form class="dialog-form" [formGroup]="storeroomForm">
 
     <mat-form-field>
-      <mat-label>Nazwa</mat-label>
-      <input matInput placeholder="T" formControlName="location" required>
+      <mat-label>Lokacja</mat-label>
+      <input matInput placeholder="Miejsce przechowania" formControlName="location" required>
       <mat-error *ngIf="storeroomForm.status">Proszę wpisać nazwę</mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Termin ważności</mat-label>
-      <input type="date" matInput placeholder="T" formControlName="expirationDate" required>
+      <input type="date" matInput formControlName="expirationDate" required>
       <mat-error *ngIf="storeroomForm.status">Proszę wpisać termin ważności</mat-error>
     </mat-form-field>
 
@@ -37,7 +37,7 @@
 
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">{{ cancelButtonName }}</button>
-  <button mat-button (click)="onOkClick()"> {{ okButtonName }}</button>
+  <button mat-raised-button color="primary" (click)="onNoClick()">{{ cancelButtonName }}</button>
+  <button mat-raised-button color="primary" (click)="onOkClick()"> {{ okButtonName }}</button>
 </div>
 

@@ -1,6 +1,6 @@
 ﻿namespace LifeWithFood.DTO
 {
-    public class RecipeIdDto
+    public class IdDto
     {
         public int Id { get; set; }
     }

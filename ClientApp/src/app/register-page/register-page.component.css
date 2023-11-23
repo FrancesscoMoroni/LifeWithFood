@@ -1,12 +1,17 @@
 .register-form {
   display: flex;
   flex-direction: column;
+  width: 200px;
+  margin-left: 20px;
+  margin-top: 20px;
 }
 
 .register-button {
-  color: black !important;
+  margin-left: 20px;
+  margin-top: 20px
 }
 
 .register-error {
+  margin-left: 20px;
   color: red;
 }

@@ -133,6 +133,28 @@ namespace LifeWithFood.Controllers
             return Ok(numberOfRecipes);
         }
 
+        [HttpPost]
+        [Authorize]
+        [Route("deletetag")]
+        public async Task<ActionResult<String>> DeleteTag(IdDto tagId)
+        {
+            try
+            {
+                _dbcontext.Tags
+                    .Remove(_dbcontext.Tags
+                        .Where(t => t.IdTag == tagId.Id)
+                        .FirstOrDefault()
+                    );
+                _dbcontext.SaveChanges();
+            }
+            catch
+            {
+                return Ok("Błąd podczas usuwania");
+            }
+
+            return Ok("");
+        }
+
         // Users
 
         [HttpPost]
@@ -348,9 +370,9 @@ namespace LifeWithFood.Controllers
         public async Task<ActionResult<string>> EditRecipe(RecipeDto recipeDto)
         {
 
-            Recipe editedRecord = _dbcontext.Recipes.Include(t => t.TagsIdTags).Include(t => t.ListsOfIngredients).ThenInclude(i => i.GroceriesIdFoodItemNavigation).Where(r => r.IdRecipe == recipeDto.RecipeId).FirstOrDefault();
+            Recipe editedRecord = _dbcontext.Recipes.Include(t => t.TagsIdTags).Include(t => t.ListsOfIngredients).ThenInclude(i => i.GroceriesIdFoodItemNavigation).Where(r => r.IdRecipe == recipeDto.IdRecipe).FirstOrDefault();
 
-            editedRecord.IdRecipe = recipeDto.RecipeId;
+            editedRecord.IdRecipe = recipeDto.IdRecipe;
             editedRecord.Name = recipeDto.Name;
             editedRecord.Description = recipeDto.Description;
             editedRecord.Instruction = recipeDto.Instruction;
@@ -419,6 +441,27 @@ namespace LifeWithFood.Controllers
         {
             int numberOfRecipes = _dbcontext.Recipes.Count();
             return Ok(numberOfRecipes);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("deleterecipe")]
+        public async Task<ActionResult<String>> DeleteRecipe(IdDto idRecipe)
+        {
+            try
+            {
+                _dbcontext
+                    .Remove(_dbcontext.Recipes
+                        .Where(r => r.IdRecipe == idRecipe.Id)
+                        .FirstOrDefault()
+                    );
+                _dbcontext.SaveChanges();
+            } catch
+            {
+                return Ok("Błąd podczas usuwania");
+            }
+
+            return Ok("");
         }
 
         //Groceries
@@ -507,6 +550,28 @@ namespace LifeWithFood.Controllers
         {
             int numberOfGroceries = _dbcontext.Groceries.Count();
             return Ok(numberOfGroceries);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("deletegrocery")]
+        public async Task<ActionResult<String>> DeleteGrocery(IdDto groceryId)
+        {
+            try
+            {
+                _dbcontext.Groceries
+                    .Remove(_dbcontext.Groceries
+                        .Where(g => g.IdFoodItem == groceryId.Id)
+                        .FirstOrDefault()
+                    );
+                _dbcontext.SaveChanges();
+            }
+            catch
+            {
+                return Ok("Błąd podczas usuwania");
+            }
+
+            return Ok("");
         }
     }
 }

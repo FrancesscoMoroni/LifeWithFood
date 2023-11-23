@@ -3,6 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { DataService } from '../services/data-service.service';
 import { UserStoreroomDialogComponent } from '../user-storeroom-dialog/user-storeroom-dialog.component';
+import { WhatYouCanCookDialogComponent } from '../what-you-can-cook-dialog/what-you-can-cook-dialog.component';
 import { YesNoDialogComponent } from '../yes-no-dialog/yes-no-dialog.component';
 
 interface StoreroomData {
@@ -58,6 +59,10 @@ export class UserStoreroomPageComponent {
   }
 
   openDialog(mode: boolean, ownedGrocery: any): void {
-    const dialogRef = this.dialog.open(UserStoreroomDialogComponent, { data: { mode: mode, data: ownedGrocery } });
+    const dialogRef = this.dialog.open(UserStoreroomDialogComponent, { height: '450px', width: '400px', data: { mode: mode, data: ownedGrocery } });
+  }
+
+  async whatYouCanCook() {
+    const dialogRef = this.dialog.open(WhatYouCanCookDialogComponent, { maxHeight: '900px', width: '900px' });
   }
 }

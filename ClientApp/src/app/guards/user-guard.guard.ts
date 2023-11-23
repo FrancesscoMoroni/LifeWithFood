@@ -7,7 +7,7 @@ export const userGuardGuard: CanActivateFn = (route, state) => {
 
   var userAuthService = inject(UserAuthService);
 
-  var result = userAuthService.userAuthorization("1");
+  var result = userAuthService.userAuthorization("2");
 
   return result;
 };

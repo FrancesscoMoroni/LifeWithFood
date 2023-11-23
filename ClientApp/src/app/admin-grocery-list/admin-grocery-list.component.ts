@@ -7,6 +7,7 @@ import { AdminGroceryDialogComponent } from '../admin-grocery-dialog/admin-groce
 import { Filter } from '../interface/Filter';
 import { Grocery } from '../interface/Grocery';
 import { AdminDataService } from '../services/admin-data.service';
+import { YesNoDialogComponent } from '../yes-no-dialog/yes-no-dialog.component';
 
 @Component({
   selector: 'admin-grocery-list',
@@ -14,7 +15,7 @@ import { AdminDataService } from '../services/admin-data.service';
   styleUrls: ['./admin-grocery-list.component.css']
 })
 export class AdminGroceryListComponent {
-  displayedColumns: string[] = ['id', 'name', 'unit'];
+  displayedColumns: string[] = ['id', 'name', 'unit', 'options'];
   dataSource = new MatTableDataSource<Grocery>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   length = 50;
@@ -102,6 +103,16 @@ export class AdminGroceryListComponent {
 
   sortPage() {
     this.refreshTable();
+  }
+
+  deleteGrocery(id: number) {
+    const dialogRef = this.dialog.open(YesNoDialogComponent, { data: { title: 'usunąć ten składnik?' } });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.adminDataService.deleteGrocery(id);
+      }
+    });
   }
 
 }

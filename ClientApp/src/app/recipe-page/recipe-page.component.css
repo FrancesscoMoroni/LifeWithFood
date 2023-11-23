@@ -1,4 +1,58 @@
-.form {
+.page-content {
+  display: flex;
+  flex-direction:column;
+  margin-left: 30px;
+  margin-bottom: 30px;
+}
+
+.icon-white {
+  color: white;
+}
+
+.icon-red {
+  color: red;
+}
+
+.button-recipe-list {
+  width: 150px;
+}
+
+.user-date {
+  font-size: 13px;
+}
+
+.instruction {
+  font-size: 20px;
+}
+
+.description {
+  font-size: 20px;
+}
+
+.button-add-rating {
+  width: 150px;
+}
+
+.ratings {
+  font-size: 20px;
+  margin-top: 30px;
+  margin-left: 30px;
+}
+
+.raiting-form {
   display: flex;
   flex-direction: column;
+  width: 400px;
+  margin-left: 30px;
 }
+
+.form-score {
+  width: 100px;
+}
+
+.rating-card {
+  margin-top: 30px;
+  margin-left: 30px;
+  width: 600px;
+}
+

@@ -1,8 +1,10 @@
-<button mat-raised-button style="margin-left: 10px" (click)="newUser()">Nowy</button>
-<button mat-raised-button style="margin-left: 10px" (click)="refreshTable()">Przeładuj</button>
-<br>
-<br>
-<form [formGroup]="filterForm">
+<div class="buttons">
+  <button mat-raised-button color="primary" (click)="newUser()">Nowy</button>
+  <button mat-raised-button color="primary" (click)="refreshTable()">Przeładuj</button>
+</div>
+
+
+<form [formGroup]="filterForm" class="search-form">
   <mat-form-field>
     <input matInput placeholder="Login" formControlName="name">
   </mat-form-field>
@@ -14,7 +16,7 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
-  <button mat-raised-button (click)="sortPage()">Szukaj</button>
+  <button mat-raised-button class="search-form" color="primary" (click)="sortPage()">Szukaj</button>
 </form>
 
 <br>

@@ -1,9 +1,12 @@
-<button mat-raised-button (click)="addGrocery()">Dodaj produkt</button>
-<button mat-raised-button (click)="refreshStoreroom()">Odśwież magazyn</button>
-<br />
-<br />
+<div class="buttons">
+  <button mat-raised-button color="primary" (click)="addGrocery()">Dodaj produkt</button>
+  <button mat-raised-button color="primary" (click)="refreshStoreroom()">Odśwież magazyn</button>
+  <button mat-raised-button color="primary" (click)="whatYouCanCook()">Co możesz ugotować?</button>
+</div>
+
+
 <mat-accordion>
-  <div *ngIf="this.storeroomData != undefined">
+  <div class="store-room" *ngIf="this.storeroomData != undefined">
     <mat-expansion-panel *ngFor="let l of storeroomData.locations">
       <mat-expansion-panel-header>
         <mat-panel-title>
@@ -21,7 +24,7 @@
           </div>
           <div>
             <button mat-button (click)="editStoreroomItem(o)">
-              <mat-icon> border_color</mat-icon>
+              <mat-icon>border_color</mat-icon>
             </button>
             <button mat-button (click)="deleteStoreroomItem(o.idOwnedFoodItem)">
               <mat-icon>delete</mat-icon>

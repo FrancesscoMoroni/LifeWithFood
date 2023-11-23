@@ -1,12 +1,43 @@
-<button mat-raised-button (click)="checkOnwedIngredients()">Sprawdź magazyn</button>
-<br>
-<br>
-<button mat-raised-button (click)="makeFavorite(recipeId)">Ulubione</button>
-{{ recipeId }}
-{{ recipeData.name }}
+<div class="page-content">
+  <h1>
+    {{ recipeData.name }}
 
-<form [formGroup]="ratingForm" class="form">
-  <mat-form-field>
+    <button *ngIf="role != 0" mat-mini-fab class="button-favorite" color="primary" (click)="makeFavorite(idRecipe)">
+      <mat-icon [class]="iconClass">favorite</mat-icon>
+    </button>
+  </h1>
+  <p class="user-date">
+    {{ recipeData.userName }} {{ recipeData.createDate }}
+  </p>
+
+  <p>
+    Czas przygotowania: {{ recipeData.prepTime }} min
+  </p>
+
+  <p class="description">
+    {{ recipeData.description }}
+  </p>
+
+  <p class="instruction">
+    {{ recipeData.instruction }}
+  </p>
+  <div>Lista składników:</div>
+  <ul *ngFor="let i of recipeData.ingredients">
+    <li>
+      {{ i.name }}: {{ i.quantity }} {{ i.unit }}
+    </li>
+  </ul>
+
+  <button *ngIf="role != 0" mat-raised-button class="button-recipe-list" color="primary" (click)="checkOnwedIngredients()">Sprawdź magazyn</button>
+
+</div>
+
+<p *ngIf="role != 0" class="ratings">
+  Dodaj nowy komentarz:
+</p>
+
+<form *ngIf="role != 0" [formGroup]="ratingForm" class="raiting-form">
+  <mat-form-field class="form-score">
     <mat-label>Ocena</mat-label>
     <mat-select formControlName="score" required>
       <mat-option *ngFor="let i of rating" [value]="i.value">
@@ -21,6 +52,28 @@
     <textarea matInput placeholder="Komentarz" formControlName="comment" required></textarea>
     <mat-error *ngIf="ratingForm.status">Proszę wpisać komentarz</mat-error>
   </mat-form-field>
+
+  <button mat-raised-button class="button-add-rating" color="primary" (click)="addComment()">Dodaj komentarz</button>
 </form>
 
-<button mat-raised-button (click)="addComment()">Dodaj komentarz</button>
+<p class="ratings">
+  Komentarze:
+</p>
+
+<div *ngFor="let item of recipeData.ratings">
+  <mat-card class="rating-card">
+    <mat-card-content>
+      <mat-card-header>
+        Ocena: {{item.score}}
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          {{ item.userName }}
+        </p>
+        <p>
+          {{item.comment}}
+        </p>
+      </mat-card-content>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,23 @@
+.buttons {
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
+  margin-left: 20px;
+  gap: 10px;
+}
+
+.store-room {
+  margin-top: 30px;
+}
+
+.mat-expansion-panel-spacing {
+  margin: 15px 16px 15px 16px !important;
+}
+
+.my-class .mat-dialog-container {
+  height: 400px;
+  width: 600px;
+  border-radius: 10px;
+  background: lightcyan;
+  color: #039be5;
+}

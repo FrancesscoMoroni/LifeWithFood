@@ -1,8 +1,7 @@
-import { Component, Inject } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { Component } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { UserAuthService } from '../services/user-auth.service';
-import { User } from 'oidc-client';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
@@ -10,21 +9,22 @@ import { User } from 'oidc-client';
   styleUrls: ['./login-page.component.css']
 })
 export class LoginPageComponent {
-  private userAuthService: UserAuthService;
-
   public error: string = "";
   public test: boolean = true;
 
-  loginForm = this.formBuilder.group({
-    login: '',
-    password: ''
+  loginForm = this.fb.group({
+    login: ['', Validators.required],
+    password: ['', Validators.required]
   });
 
-  constructor(private formBuilder: FormBuilder, userAuthService: UserAuthService) {
-    this.userAuthService = userAuthService;
-  } 
+  constructor(private router: Router, private fb: FormBuilder, private userAuthService: UserAuthService) {} 
 
   async onSubmit() {
-    this.error = await Promise.resolve(this.userAuthService.loginUser(this.loginForm.value));
+    if (this.loginForm.status == "VALID") {
+      this.error = await Promise.resolve(this.userAuthService.loginUser(this.loginForm.value));
+      if (this.error == '') {
+        this.router.navigateByUrl('/');
+      }
+    }
   }
 }

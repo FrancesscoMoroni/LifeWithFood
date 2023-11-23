@@ -6,3 +6,7 @@
 .file-input {
   display: none;
 }
+
+.prep-time-input {
+    width: 180px
+}

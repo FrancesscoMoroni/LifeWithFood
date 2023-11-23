@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Filter } from '../interface/Filter';
+import { WhatYouCanCookFilter } from '../interface/WhatYouCanCookFilter';
 
 @Injectable({
   providedIn: 'root'
@@ -138,6 +139,15 @@ export class DataService {
 
     return '';
   }
+
+  public async whatYouCanCook(filter: WhatYouCanCookFilter) {
+    var data: any;
+
+    data = await this.http.post<any>(this.baseUrl + "data/whatcanyoucook", filter, { headers: { 'authorization': 'bearer ' + this.getJwt() } }).toPromise();
+
+    return data;
+  }
+  
 
   private getJwt() {
     return localStorage.getItem('jwt') || '';

@@ -1,0 +1,15 @@
+.search-form {
+  margin-top: 10px;
+  margin-left: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.search-button {
+  margin-top: 10px;
+}
+
+.table {
+  margin-top: 30px;
+}

@@ -1,16 +1,17 @@
-<p>login-page works!</p>
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
   <div class="login-form">
     <mat-form-field appearance="fill">
       <mat-label>Login</mat-label>
       <input id="login" type="text" matInput formControlName="login">
+      <mat-error *ngIf="loginForm.status">Proszę wpisać login</mat-error>
     </mat-form-field>
     <mat-form-field appearance="fill">
       <mat-label>Hasło</mat-label>
       <input id="password" type="password" matInput formControlName="password">
+      <mat-error *ngIf="loginForm.status">Proszę wpisać hasło</mat-error>
     </mat-form-field>
   </div>
-  <button mat-raised-button type="submit">Zaloguj</button>
+  <button class="login-button" color="primary" mat-raised-button type="submit">Zaloguj</button>
 </form>
 <p class="login-error"> {{ error }} </p>
 

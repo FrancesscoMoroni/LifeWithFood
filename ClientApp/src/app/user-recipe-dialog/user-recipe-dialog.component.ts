@@ -95,15 +95,11 @@ export class UserRecipeDialogComponent {
           ingredients: this.ingredientsData
         }
 
-        console.log(this.ingredientsData);
-        console.log(this.tagsData);
-        console.log(this.recipeForm.value);
-        console.log(newRecipe);
         this.dataService.createNewRecipe(newRecipe);
       } else {
 
         var editRecipe = {
-          recipeId: this.data.recipe.idRecipe,
+          idRecipe: this.data.recipe.idRecipe,
           name: this.recipeForm.value.name,
           instruction: this.recipeForm.value.instruction,
           description: this.recipeForm.value.description,

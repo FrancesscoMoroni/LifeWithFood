@@ -49,7 +49,7 @@ namespace LifeWithFood.Controllers
             }
             else
             {
-                authorizationDto.Error = "Błąd rejestracji";
+                authorizationDto.Error = "Taki użytkownik już istnieje";
             }
 
             return Ok(authorizationDto);
@@ -77,15 +77,7 @@ namespace LifeWithFood.Controllers
         [Authorize]
         public async Task<ActionResult<bool>> AuthUser(AuthDto authDto)
         {
-            if (authDto.Jwt == "" || authDto.Jwt == null)
-            {
-                return Ok(false);
-            }
-
-            var handler = new JwtSecurityTokenHandler();
-            var claims = handler.ValidateToken(authDto.Jwt, tokenValidationParameters, out var tokenSecure);
-
-            if (claims.IsInRole(authDto.Role)) {
+            if (HttpContext.User.IsInRole(authDto.Role) || HttpContext.User.IsInRole("1")) {
                 return Ok(true);
             }
 
@@ -99,7 +91,7 @@ namespace LifeWithFood.Controllers
             newUser.Login = userDto.Login;
             newUser.Password = userDto.Password;
             newUser.Name = "";
-            newUser.Role = 1;
+            newUser.Role = 2;
             newUser.CreateDate = DateTime.Now;
 
             try

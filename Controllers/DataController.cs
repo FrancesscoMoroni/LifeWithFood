@@ -9,6 +9,7 @@ using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace LifeWithFood.Controllers
 {
@@ -211,10 +212,10 @@ namespace LifeWithFood.Controllers
                 .Include(t => t.TagsIdTags)
                 .Include(t => t.ListsOfIngredients)
                 .ThenInclude(i => i.GroceriesIdFoodItemNavigation)
-                .Where(r => r.IdRecipe == recipeDto.RecipeId)
+                .Where(r => r.IdRecipe == recipeDto.IdRecipe)
                 .FirstOrDefault();
 
-            editedRecord.IdRecipe = recipeDto.RecipeId;
+            editedRecord.IdRecipe = recipeDto.IdRecipe;
             editedRecord.Name = recipeDto.Name;
             editedRecord.Description = recipeDto.Description;
             editedRecord.Instruction = recipeDto.Instruction;
@@ -542,6 +543,110 @@ namespace LifeWithFood.Controllers
             }
             
             return Ok(numberOfRecipes);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("whatcanyoucook")]
+        public async Task<ActionResult<List<RecipeIngredientDto>>> WhatCanYouCook(WhatCanYouCookDto whatCanYouCookDto)
+        {
+            String userName = HttpContext.User.Identity.Name;
+
+            List<RecipeYouCanCook> allRecipes = new List<RecipeYouCanCook>();
+            List<RecipeYouCanCook> recipesYouCanCook = new List<RecipeYouCanCook>();
+
+            List<RecipeIngredientDto> userIngredients = new List<RecipeIngredientDto>();
+
+            var query = _dbcontext.Recipes.AsQueryable();
+
+            try
+            {
+                userIngredients = _dbcontext.Users
+                    .Where(u => u.Login == userName)
+                    .Include(u => u.OwnedGroceries)
+                    .ThenInclude(o => o.GroceriesIdFoodItemNavigation)
+                    .FirstOrDefault()
+                    .OwnedGroceries
+                    .GroupBy(o => o.GroceriesIdFoodItemNavigation.Name)
+                    .Select(o => new RecipeIngredientDto
+                    {
+                        IdFoodItem = o.Where(t => t.GroceriesIdFoodItemNavigation.Name == o.Key).First().GroceriesIdFoodItemNavigation.IdFoodItem,
+                        Name = o.Key,
+                        Quantity = o.Sum(o => o.Quanity),
+                        Unit = o.Where(t => t.GroceriesIdFoodItemNavigation.Name == o.Key).First().GroceriesIdFoodItemNavigation.Unit
+                    })
+                    .ToList();
+
+                query = query.Include(t => t.TagsIdTags)
+                    .Include(r => r.ListsOfIngredients)
+                    .ThenInclude(i => i.GroceriesIdFoodItemNavigation);
+
+                if (!whatCanYouCookDto.filtr.IsNullOrEmpty())
+                {
+                    query = query.Where(r => r.TagsIdTags.Any(t => whatCanYouCookDto.filtr.Contains(t.IdTag)));
+                }
+
+                allRecipes = query
+                    .Select(r => new RecipeYouCanCook
+                    {
+                        RecipeCard = new RecipeCardDto
+                        {
+                            Id = r.IdRecipe,
+                            Name = r.Name,
+                            Description = r.Description,
+                            PrepTime = r.PrepTime,
+                            Tags = r.TagsIdTags.Select(t => new TagDto { Name = t.Name, Priority = t.Priority}).ToList()
+                        },
+                        AllIngredients = r.ListsOfIngredients.Select(l => new RecipeIngredientDto {
+                                IdFoodItem = l.GroceriesIdFoodItem,
+                                Name = l.GroceriesIdFoodItemNavigation.Name,
+                                Quantity = l.Quanity,
+                                Unit = l.GroceriesIdFoodItemNavigation.Unit
+                            }).ToList()
+                    })
+                    .ToList();
+
+                
+
+                allRecipes.ForEach(r =>
+                {
+                    List<RecipeIngredientDto> intersectIngredients = userIngredients.Where(u => r.AllIngredients
+                                                                .Contains(r.AllIngredients
+                                                                    .Where(a => a.IdFoodItem == u.IdFoodItem).FirstOrDefault()
+                                                                 )
+                                                               )
+                                                               .Select(u => new RecipeIngredientDto {
+                                                                   IdFoodItem = u.IdFoodItem,
+                                                                   Name = u.Name,
+                                                                   Quantity = u.Quantity > r.AllIngredients.Where(a => a.IdFoodItem == u.IdFoodItem).FirstOrDefault().Quantity ? r.AllIngredients.Where(a => a.IdFoodItem == u.IdFoodItem).FirstOrDefault().Quantity : u.Quantity,
+                                                                   Unit = u.Unit
+                                                               })
+                                                               .ToList();
+
+                    if (!intersectIngredients.IsNullOrEmpty())
+                    {
+                        double recipeIngredientsSum = r.AllIngredients.Sum(a => a.Quantity);
+                        double userIngredientsSum = intersectIngredients.Sum(i => i.Quantity);
+
+                        
+
+                        double ingredientsStatus = (userIngredientsSum / recipeIngredientsSum) * 100.0;
+
+                        if (ingredientsStatus > 50.0 )
+                        {
+                            r.Compatibility = ((int)ingredientsStatus);
+
+                            recipesYouCanCook.Add(r);
+                        }
+                    }
+                });
+            }
+            catch
+            {
+                return Ok(recipesYouCanCook);
+            }
+
+            return Ok(recipesYouCanCook.OrderByDescending(r => r.Compatibility).Take(whatCanYouCookDto.Amount));
         }
     }
 }

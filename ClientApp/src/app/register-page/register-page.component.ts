@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { UserAuthService } from '../services/user-auth.service';
 
 @Component({
@@ -9,21 +10,22 @@ import { UserAuthService } from '../services/user-auth.service';
   styleUrls: ['./register-page.component.css']
 })
 export class RegisterPageComponent {
-  private userAuthService: UserAuthService;
-
   public error: string = "";
   public test: boolean = true;
 
-  registerForm = this.formBuilder.group({
-    login: '',
-    password: ''
+  registerForm = this.fb.group({
+    login: ['', Validators.required],
+    password: ['', Validators.required]
   });
 
-  constructor(private formBuilder: FormBuilder, userAuthService: UserAuthService) {
-    this.userAuthService = userAuthService;
-  }
+  constructor(private router: Router, private fb: FormBuilder, private userAuthService: UserAuthService) {}
 
   async onSubmit() {
-    this.error = await Promise.resolve(this.userAuthService.registerUser(this.registerForm.value));
+    if (this.registerForm.status == "VALID") {
+      this.error = await Promise.resolve(this.userAuthService.registerUser(this.registerForm.value));
+      if (this.error == '') {
+        this.router.navigateByUrl('/');
+      }
+    }
   }
 }

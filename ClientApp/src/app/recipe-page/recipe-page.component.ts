@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { RecipePageService } from '../services/recipe-page.service';
+import { UserAuthService } from '../services/user-auth.service';
+import { ShoppingListDialogComponent } from '../shopping-list-dialog/shopping-list-dialog.component';
 
 @Component({
   selector: 'app-recipe-page',
@@ -9,7 +12,9 @@ import { RecipePageService } from '../services/recipe-page.service';
   styleUrls: ['./recipe-page.component.css']
 })
 export class RecipePageComponent {
-  public recipeId: number;
+  public iconClass = "icon-white";
+  public role = 0;
+  public idRecipe: number;
   public favorite: boolean = false;
   public recipeData = {
     'idRecipe': 0,
@@ -53,26 +58,54 @@ export class RecipePageComponent {
     { value: 5, viewValue: '5' }
   ];
 
-  constructor(activatedRoute: ActivatedRoute,private recipePageService: RecipePageService, private fb: FormBuilder) {
-    this.recipeId = activatedRoute.snapshot.params['id'];
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private recipePageService: RecipePageService, private fb: FormBuilder, public dialog: MatDialog, private userAuthService: UserAuthService) {
+    this.idRecipe = activatedRoute.snapshot.params['id'];
+    this.constructorAsync();
 
-    this.ifFavorite();
-    this.getRecipe();
+    router.events.subscribe(e => {
+      if (e instanceof NavigationEnd) {
+        this.checkRole();
+      }
+    });
   };
 
+  async constructorAsync() {
+    await this.checkRole();
+    await this.ifFavorite();
+    await this.getRecipe();
+  }
+
+  async checkRole() {
+    this.role = await this.userAuthService.checkRole();
+  }
+
   public async ifFavorite() {
-    this.favorite = await this.recipePageService.ifRecipeIsFavorite(this.recipeId);
+    if (this.role != 0) {
+      this.favorite = await this.recipePageService.ifRecipeIsFavorite(this.idRecipe);
+
+      if (!this.favorite) {
+        this.iconClass = "icon-white";
+      } else {
+        this.iconClass = "icon-red";
+      }
+    }
   }
 
   public async getRecipe() {
-    this.recipeData = await this.recipePageService.getRecipe(this.recipeId);
+    this.recipeData = await this.recipePageService.getRecipe(this.idRecipe);
   }
 
   public async makeFavorite(id: number) {
     
-    await this.recipePageService.menageFovoriteRecipe(this.recipeId);
+    await this.recipePageService.menageFovoriteRecipe(this.idRecipe);
 
     this.favorite = !this.favorite;
+
+    if (!this.favorite) {
+      this.iconClass = "icon-white";
+    } else {
+      this.iconClass = "icon-red";
+    }
   }
 
   public async addComment() {
@@ -88,16 +121,7 @@ export class RecipePageComponent {
   }
 
   public async checkOnwedIngredients() {
-    var ingredients = await this.recipePageService.checkOwnedIngredients(this.recipeId);
-
-    if (ingredients?.length != 0) {
-      const blob = new Blob([JSON.stringify(ingredients)], { type: 'txt' });
-      let a = document.createElement('a');
-      a.download = "Składniki na " + this.recipeData.name;
-      a.href = window.URL.createObjectURL(blob);
-
-      a.click();
-    }
+    const dialogRef = this.dialog.open(ShoppingListDialogComponent, { data: { idRecipe: this.idRecipe, name: this.recipeData.name } });
   }
 
 }

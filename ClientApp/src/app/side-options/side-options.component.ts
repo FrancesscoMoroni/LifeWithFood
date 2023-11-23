@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 import { DrawerService } from '../services/drawer.service';
 import { UserAuthService } from '../services/user-auth.service';
 
@@ -8,12 +9,20 @@ import { UserAuthService } from '../services/user-auth.service';
   styleUrls: ['./side-options.component.css']
 })
 export class SideOptionsComponent {
-  private drawerService: DrawerService;
-  private userAuthService: UserAuthService;
+  public role = 0;
 
-  constructor(drawerService: DrawerService, userAuthService: UserAuthService) {
-    this.drawerService = drawerService;
-    this.userAuthService = userAuthService;
+  constructor(private drawerService: DrawerService, private userAuthService: UserAuthService, private router: Router) {
+    this.checkRole();
+
+    router.events.subscribe(e => {
+      if (e instanceof NavigationEnd) {
+        this.checkRole();
+      }
+    });
+  }
+
+  async checkRole() {
+    this.role = await this.userAuthService.checkRole();
   }
 
   toggle() {
@@ -22,6 +31,12 @@ export class SideOptionsComponent {
 
   logout() {
     this.userAuthService.logout();
+  }
+
+  goTo(path: string) {
+    this.toggle();
+    this.checkRole();
+    this.router.navigateByUrl(path);
   }
 
 }

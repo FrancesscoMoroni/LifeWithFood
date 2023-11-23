@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>{{ title }}</h1>
+<div mat-dialog-content>
+  <div *ngIf="ingredients?.length == 0">
+    Posiadasz wszystkie składniki, więc można gotować! :)
+  </div>
+  <mat-list *ngFor="let i of ingredients">
+    <mat-list-item>{{i.name}}  {{i.quantity}} {{i.unit}}</mat-list-item>
+  </mat-list>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="onCancleClick()">Anuluj</button>
+  <button *ngIf="ingredients?.length != 0" mat-raised-button color="primary" (click)="onPrintClick()">Pobierz listę JSON</button>
+</div>
+
+
+

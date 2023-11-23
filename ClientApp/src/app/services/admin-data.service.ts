@@ -68,6 +68,18 @@ export class AdminDataService {
     return '';
   }
 
+  public async deleteRecipe(id: number): Promise<string> {
+    var answear: any;
+
+    answear = await this.http.post<any>(this.baseUrl + "admindata/deleterecipe", {Id: id} , { headers: { 'authorization': 'bearer ' + this.getJwt() } }).toPromise();
+
+    if (answear !== '') {
+      return answear;
+    }
+
+    return '';
+  }
+
   //Groceries
 
   public async getGroceriesPage(pageEvent: PageEvent, filter: Filter) {
@@ -118,6 +130,18 @@ export class AdminDataService {
     return '';
   }
 
+  public async deleteGrocery(id: number): Promise<string> {
+    var answear: any;
+
+    answear = await this.http.post<any>(this.baseUrl + "admindata/deletegrocery", { Id: id }, { headers: { 'authorization': 'bearer ' + this.getJwt() } }).toPromise();
+
+    if (answear !== '') {
+      return answear;
+    }
+
+    return '';
+  }
+
   //Tag
 
   public async getTagsPage(pageEvent: PageEvent, filter: Filter) {
@@ -160,6 +184,18 @@ export class AdminDataService {
     var answear: any;
 
     answear = await this.http.post<any>(this.baseUrl + "admindata/edittag", tag, { headers: { 'authorization': 'bearer ' + this.getJwt() } }).toPromise();
+
+    if (answear !== '') {
+      return answear;
+    }
+
+    return '';
+  }
+
+  public async deleteTag(id: number): Promise<string> {
+    var answear: any;
+
+    answear = await this.http.post<any>(this.baseUrl + "admindata/deletetag", { Id: id }, { headers: { 'authorization': 'bearer ' + this.getJwt() } }).toPromise();
 
     if (answear !== '') {
       return answear;

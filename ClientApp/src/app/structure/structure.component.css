@@ -1,14 +1,10 @@
 .drawer-content {
-  background-color: #E0B0FF;
+  background-color: #B9F6CA;
   min-height: 100vh;
 }
 
 .drawer {
   display: flex;
-  background-color: #E0B0FF;
+  background-color: #B9F6CA;
   width: 200px;
-}
-
-.main-container {
-
 }

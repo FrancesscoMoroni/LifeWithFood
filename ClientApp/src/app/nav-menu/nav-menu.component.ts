@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { DrawerService } from '../services/drawer.service';
+import { UserAuthService } from '../services/user-auth.service';
 
 @Component({
   selector: 'app-nav-menu',
@@ -7,11 +8,7 @@ import { DrawerService } from '../services/drawer.service';
   styleUrls: ['./nav-menu.component.css']
 })
 export class NavMenuComponent {
-  private drawerService: DrawerService;
-
-  constructor(drawerService: DrawerService) {
-    this.drawerService = drawerService;
-  }
+  constructor(private drawerService: DrawerService) {}
 
   toggle() {
     this.drawerService.toggle();

@@ -1,5 +1,40 @@
 .recipe-card {
-    color: black;
-    background-color: white;
+  color: black;
+  margin: 15px 30px 15px 30px;
 }
 
+.search-form {
+  margin-top: 10px;
+  margin-left: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.search-button {
+  margin-top: 10px;
+}
+
+.paginator {
+  margin-top: 10px;
+}
+
+.bottom-elements {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.time-icon {
+  margin-top: 7px;
+}
+
+.time {
+  margin-top: 10px;
+}
+
+.tags {
+  gap: 10px;
+  margin-left: 15px;
+  margin-bottom: 3px;
+}

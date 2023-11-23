@@ -23,7 +23,7 @@ namespace LifeWithFood.Controllers
 
         [HttpPost]
         [Route("getrecipe")]
-        public async Task<ActionResult<Recipe>> GetPage(RecipeIdDto id)
+        public async Task<ActionResult<Recipe>> GetPage(IdDto id)
         {
             RecipePageDto recipe = null;
 
@@ -37,7 +37,7 @@ namespace LifeWithFood.Controllers
                     .ThenInclude(i => i.GroceriesIdFoodItemNavigation)
                     .Select(r => new RecipePageDto
                     {
-                        RecipeId = r.IdRecipe,
+                        IdRecipe = r.IdRecipe,
                         Name = r.Name,
                         Description = r.Description,
                         Instruction = r.Instruction,
@@ -84,13 +84,13 @@ namespace LifeWithFood.Controllers
         [HttpPost]
         [Authorize]
         [Route("iffavoriterecipe")]
-        public async Task<ActionResult<bool>> IfFavoriteRecipe(RecipeIdDto recipeId)
+        public async Task<ActionResult<bool>> IfFavoriteRecipe(IdDto idRecipe)
         {
             String userName = HttpContext.User.Identity.Name;
             try
             {
                 Recipe favoriteRecipe = _dbcontext.Recipes
-                    .Where(r => r.IdRecipe == recipeId.Id)
+                    .Where(r => r.IdRecipe == idRecipe.Id)
                     .FirstOrDefault();
                 User currentUser = _dbcontext.Users
                     .Where(u => u.Login == userName)
@@ -116,13 +116,13 @@ namespace LifeWithFood.Controllers
         [HttpPost]
         [Authorize]
         [Route("menagefovoriterecipe")]
-        public async Task<ActionResult<string>> MenageFovoriteRecipe(RecipeIdDto recipeId)
+        public async Task<ActionResult<string>> MenageFovoriteRecipe(IdDto idRecipe)
         {
             String userName = HttpContext.User.Identity.Name;
             try
             {
                 Recipe favoriteRecipe = _dbcontext.Recipes
-                    .Where(r => r.IdRecipe == recipeId.Id)
+                    .Where(r => r.IdRecipe == idRecipe.Id)
                     .FirstOrDefault();
 
                 User currentUser = _dbcontext.Users
@@ -236,7 +236,7 @@ namespace LifeWithFood.Controllers
         [HttpPost]
         [Authorize]
         [Route("checkownedingredients")]
-        public async Task<ActionResult<List<RecipeIngredientDto>>> CheckOwnedIngredients(RecipeIdDto recipeId)
+        public async Task<ActionResult<List<RecipeIngredientDto>>> CheckOwnedIngredients(IdDto idRecipe)
         {
             String userName = HttpContext.User.Identity.Name;
 
@@ -249,7 +249,7 @@ namespace LifeWithFood.Controllers
                 recipeIngredients = _dbcontext.Recipes
                     .Include(r => r.ListsOfIngredients)
                     .ThenInclude(i => i.GroceriesIdFoodItemNavigation)
-                    .Where(r => r.IdRecipe == recipeId.Id)
+                    .Where(r => r.IdRecipe == idRecipe.Id)
                     .FirstOrDefault()
                     .ListsOfIngredients
                     .Select(i => new RecipeIngredientDto
