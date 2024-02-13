@@ -17,16 +17,47 @@
   width: 150px;
 }
 
-.user-date {
-  font-size: 13px;
+.tags {
+  font-family: Lato;
+  gap: 10px;
+  display: flex;
+  flex-direction: row;
 }
 
-.instruction {
-  font-size: 20px;
+.user-date {
+  font-size: 13px;
+  font-family: Lato;
+}
+
+.title {
+  font-family: "Lato Heavy";
 }
 
 .description {
+  font-family: Lato;
+  max-width: 90vw;
   font-size: 20px;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  line-height: 1.8;
+}
+
+.instruction {
+  font-family: Lato;
+  max-width: 90vw;
+  font-size: 20px;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  line-height: 1.4;
+}
+
+.ingredients-title {
+  font-family: "Lato Heavy";
+  font-size: 20px;
+}
+
+.ingredients {
+  font-family: Lato;
 }
 
 .button-add-rating {
@@ -34,6 +65,7 @@
 }
 
 .ratings {
+  font-family: "Lato Heavy";
   font-size: 20px;
   margin-top: 30px;
   margin-left: 30px;
@@ -46,6 +78,14 @@
   margin-left: 30px;
 }
 
+.comment-author {
+  font-family: "Lato Heavy";
+}
+
+.comment {
+  font-family: Lato;
+}
+
 .form-score {
   width: 100px;
 }
@@ -56,3 +96,10 @@
   width: 600px;
 }
 
+.stars {
+  color: #ffc107;
+}
+
+.star-rating {
+  font-size: 13px;
+}

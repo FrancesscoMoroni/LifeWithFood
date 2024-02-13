@@ -67,7 +67,7 @@ export class MainPageComponent {
     this.tagsSelection = result;
   }
 
-  refreshTable() {
+  refreshList() {
     this.getNumberOfRecipes();
 
     var pageEvent = {
@@ -99,6 +99,6 @@ export class MainPageComponent {
   }
 
   sortPage() {
-    this.refreshTable();
+    this.refreshList();
   }
 }

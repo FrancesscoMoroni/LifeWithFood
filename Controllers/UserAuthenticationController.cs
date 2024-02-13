@@ -20,27 +20,17 @@ namespace LifeWithFood.Controllers
 
         private readonly LifeWithFoodDbContext _dbcontext;
         private readonly IConfiguration _configuration;
-        private readonly TokenValidationParameters tokenValidationParameters;
-
         public UserAuthenticationController(LifeWithFoodDbContext dbcontext, IConfiguration configuration)
         {
             _dbcontext = dbcontext;
             this._configuration = configuration;
-
-            tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value!)),
-                ValidateIssuer = false,
-                ValidateAudience = false
-            };
         }
 
         [HttpPost]
         [Route("userregister")]
-        public async Task<ActionResult<AuthorizationDto>> Register(UserDto userDto)
+        public async Task<ActionResult<JWTDto>> Register(UserDto userDto)
         {
-            var authorizationDto = new AuthorizationDto();
+            var authorizationDto = new JWTDto();
 
             if (AutherizationRegister(userDto))
             {
@@ -57,9 +47,9 @@ namespace LifeWithFood.Controllers
 
         [HttpPost]
         [Route("userlogin")]
-        public async Task<ActionResult<AuthorizationDto>> Login(UserDto userDto)
+        public async Task<ActionResult<JWTDto>> Login(UserDto userDto)
         {
-            var authorizationDto = new AuthorizationDto();
+            var authorizationDto = new JWTDto();
 
             if (AutherizationLogin(userDto))
             {
@@ -157,7 +147,9 @@ namespace LifeWithFood.Controllers
                 new Claim(ClaimTypes.Role, user.Role.ToString())
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value!));
+            var key = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value!)
+                );
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 

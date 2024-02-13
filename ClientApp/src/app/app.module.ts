@@ -23,6 +23,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { LoginPageComponent } from './login-page/login-page.component';
@@ -107,7 +108,8 @@ import { ShoppingListDialogComponent } from './shopping-list-dialog/shopping-lis
     MatDividerModule,
     MatListModule,
     MatExpansionModule,
-    MatChipsModule
+    MatChipsModule,
+    MatGridListModule
   ],
   providers: [],
   bootstrap: [AppComponent]

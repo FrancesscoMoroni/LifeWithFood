@@ -58,7 +58,7 @@ CREATE TABLE Groceries (
 CREATE TABLE ListsOfIngredients (
   Groceries_idFoodItem INT NOT NULL,
   Recipes_idRecipe INT NOT NULL,
-  quanity INT NOT NULL,
+  quantity INT NOT NULL,
   PRIMARY KEY (Groceries_idFoodItem, Recipes_idRecipe),
   INDEX fk_ListsOfIngredients_Groceries1_idx (Groceries_idFoodItem ASC),
   INDEX fk_ListsOfIngredients_Recipes1_idx (Recipes_idRecipe ASC),
@@ -77,7 +77,7 @@ CREATE TABLE ListsOfIngredients (
 CREATE TABLE OwnedGroceries (
   idOwnedFoodItem INT NOT NULL IDENTITY,
   location VARCHAR(MAX) NOT NULL,
-  quanity INT NOT NULL,
+  quantity INT NOT NULL,
   expirationDate DATE NULL,
   Users_idUser INT NOT NULL,
   Groceries_idFoodItem INT NOT NULL,
@@ -119,20 +119,6 @@ CREATE TABLE RecipesTags (
     ON DELETE CASCADE
     ON UPDATE CASCADE);
 
-
-CREATE TABLE Images (
-  idImage INT NOT NULL IDENTITY,
-  position VARCHAR(45) NULL,
-  Recipes_idRecipe INT NOT NULL,
-  PRIMARY KEY (idImage, Recipes_idRecipe),
-  INDEX fk_Images_Recipes1_idx (Recipes_idRecipe ASC),
-  CONSTRAINT fk_Images_Recipes1
-    FOREIGN KEY (Recipes_idRecipe)
-    REFERENCES Recipes (idRecipe)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE);
-
-
 CREATE TABLE FavoriteRecipes (
   Users_idUser INT NOT NULL,
   Recipes_idRecipe INT NOT NULL,
@@ -149,3 +135,16 @@ CREATE TABLE FavoriteRecipes (
     REFERENCES Recipes (idRecipe)
     ON DELETE CASCADE
     ON UPDATE CASCADE);
+
+INSERT INTO [dbo].[Users]
+	([login]
+	,[password]
+	,[name]
+	,[role]
+	,[createDate])
+VALUES
+	('admin'
+	,'admin'
+	,'admin'
+	,1
+	,GETDATE())

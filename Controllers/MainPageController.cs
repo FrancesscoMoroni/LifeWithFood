@@ -29,9 +29,10 @@ namespace LifeWithFood.Controllers
             try
             {
                 query = _dbcontext.Recipes
-                           .Include(t => t.TagsIdTags)
-                           .Include(t => t.ListsOfIngredients)
+                           .Include(r => r.TagsIdTags)
+                           .Include(r => r.ListsOfIngredients)
                            .ThenInclude(i => i.GroceriesIdFoodItemNavigation)
+                           .Include(r => r.Ratings)
                            .Where(r => r.Name.StartsWith(paginatorDto.name));
 
                 if (!paginatorDto.filtr.IsNullOrEmpty())
@@ -39,51 +40,55 @@ namespace LifeWithFood.Controllers
                     query = query.Where(r => r.TagsIdTags.Any(t => paginatorDto.filtr.Contains(t.IdTag)));
                 }
 
+                var queryRecipeCard = query.Select(s => new RecipeCardDto
+                {
+                    Name = s.Name,
+                    Description = s.Description,
+                    Id = s.IdRecipe,
+                    PrepTime = s.PrepTime,
+                    CreateDate = s.CreateDate,
+                    Tags = s.TagsIdTags.Select(t => new TagDto
+                    {
+                        Name = t.Name,
+                        Priority = t.Priority
+                    }).OrderBy(t => t.Priority).ToList(),
+                    Score = s.Ratings.Count != 0 ? s.Ratings.Sum(r => r.Score) / s.Ratings.Count : 0,
+                });
+
                 switch (paginatorDto.sort)
                 {
                     case 1:
-                        query = query.OrderBy(r => r.Name);
+                        queryRecipeCard = queryRecipeCard.OrderBy(r => r.Name);
                         break;
                     case 2:
-                        query = query.OrderByDescending(r => r.Name);
+                        queryRecipeCard = queryRecipeCard.OrderByDescending(r => r.Name);
                         break;
                     case 3:
-                        query = query.OrderBy(r => r.PrepTime);
+                        queryRecipeCard = queryRecipeCard.OrderBy(r => r.PrepTime);
                         break;
                     case 4:
-                        query = query.OrderByDescending(r => r.PrepTime);
+                        queryRecipeCard = queryRecipeCard.OrderByDescending(r => r.PrepTime);
                         break;
                     case 5:
-                        query = query.OrderBy(r => r.IdRecipe);
+                        queryRecipeCard = queryRecipeCard.OrderBy(r => r.Score);
                         break;
                     case 6:
-                        query = query.OrderByDescending(r => r.IdRecipe);
+                        queryRecipeCard = queryRecipeCard.OrderByDescending(r => r.Score);
                         break;
                     case 7:
-                        query = query.OrderBy(r => r.CreateDate);
+                        queryRecipeCard = queryRecipeCard.OrderBy(r => r.CreateDate);
                         break;
                     case 8:
-                        query = query.OrderByDescending(r => r.CreateDate);
+                        queryRecipeCard = queryRecipeCard.OrderByDescending(r => r.CreateDate);
                         break;
                     default:
-                        query = query.OrderBy(r => r.IdRecipe);
+                        queryRecipeCard = queryRecipeCard.OrderBy(r => r.Id);
                         break;
                 }
-                pageList = query.Select(s => new RecipeCardDto {
-                        Name = s.Name,
-                        Description = s.Description,
-                        Id = s.IdRecipe,
-                        PrepTime = s.PrepTime,
-                        Tags = s.TagsIdTags.Select(t => new TagDto
-                        {
-                            Name = t.Name,
-                            Priority = t.Priority
-                        }).OrderBy(t => t.Priority).ToList()
-                    })
+                pageList = queryRecipeCard
                     .Skip(paginatorDto.PageIndex * paginatorDto.PageSize)
                     .Take(paginatorDto.PageSize)
-                    .ToList<RecipeCardDto>();
-
+                    .ToList();
             } catch
             {
                 return Ok(pageList);

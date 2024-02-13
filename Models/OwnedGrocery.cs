@@ -9,7 +9,7 @@ public partial class OwnedGrocery
 
     public string Location { get; set; }
 
-    public int Quanity { get; set; }
+    public int Quantity { get; set; }
 
     public DateTime? ExpirationDate { get; set; }
 

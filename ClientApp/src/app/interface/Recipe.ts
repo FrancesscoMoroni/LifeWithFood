@@ -7,14 +7,14 @@ export interface Recipe {
   createDate: Date;
   editDate: Date;
   creator: string;
-  tagsIdTags: [{
+  tags: [{
     idTag: number,
     priority: number,
     name: string
   }]
   listsOfIngredients: [{
     name: string,
-    quanity: number,
+    quantity: number,
     groceriesIdFoodItemNavigation: any
   }]
 }

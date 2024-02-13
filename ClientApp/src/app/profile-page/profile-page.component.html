@@ -1,11 +1,23 @@
 <mat-tab-group>
-  <mat-tab label="Ulubione przepisy"> 
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon>favorite</mat-icon>
+      Ulubione przepisy
+    </ng-template>
     <app-user-favorite-recipes-page></app-user-favorite-recipes-page>
   </mat-tab>
-  <mat-tab label="Twoje przepisy">
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon>assignment_ind</mat-icon>
+      Twoje przepisy
+    </ng-template>
     <app-user-recipes-page></app-user-recipes-page>
   </mat-tab>
-  <mat-tab label="Twój magazyn">
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon>store</mat-icon>
+      Twój magazyn
+    </ng-template>
     <app-user-storeroom-page></app-user-storeroom-page>
   </mat-tab>
 </mat-tab-group>

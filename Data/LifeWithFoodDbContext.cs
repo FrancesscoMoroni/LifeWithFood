@@ -18,8 +18,6 @@ public partial class LifeWithFoodDbContext : DbContext
 
     public virtual DbSet<Grocery> Groceries { get; set; }
 
-    public virtual DbSet<Image> Images { get; set; }
-
     public virtual DbSet<ListsOfIngredient> ListsOfIngredients { get; set; }
 
     public virtual DbSet<OwnedGrocery> OwnedGroceries { get; set; }
@@ -31,10 +29,6 @@ public partial class LifeWithFoodDbContext : DbContext
     public virtual DbSet<Tag> Tags { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=BARTK; Database=LifeWithFoodDB;Trusted_Connection=True;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -52,27 +46,7 @@ public partial class LifeWithFoodDbContext : DbContext
                 .HasMaxLength(45)
                 .IsUnicode(false)
                 .HasColumnName("unit");
-        });
-
-        modelBuilder.Entity<Image>(entity =>
-        {
-            entity.HasKey(e => new { e.IdImage, e.RecipesIdRecipe }).HasName("PK__Images__10346276D3BF89B1");
-
-            entity.HasIndex(e => e.RecipesIdRecipe, "fk_Images_Recipes1_idx");
-
-            entity.Property(e => e.IdImage)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("idImage");
-            entity.Property(e => e.RecipesIdRecipe).HasColumnName("Recipes_idRecipe");
-            entity.Property(e => e.Position)
-                .HasMaxLength(45)
-                .IsUnicode(false)
-                .HasColumnName("position");
-
-            entity.HasOne(d => d.RecipesIdRecipeNavigation).WithMany(p => p.Images)
-                .HasForeignKey(d => d.RecipesIdRecipe)
-                .HasConstraintName("fk_Images_Recipes1");
-        });
+        });    
 
         modelBuilder.Entity<ListsOfIngredient>(entity =>
         {
@@ -84,7 +58,7 @@ public partial class LifeWithFoodDbContext : DbContext
 
             entity.Property(e => e.GroceriesIdFoodItem).HasColumnName("Groceries_idFoodItem");
             entity.Property(e => e.RecipesIdRecipe).HasColumnName("Recipes_idRecipe");
-            entity.Property(e => e.Quanity).HasColumnName("quanity");
+            entity.Property(e => e.Quantity).HasColumnName("quantity");
 
             entity.HasOne(d => d.GroceriesIdFoodItemNavigation).WithMany(p => p.ListsOfIngredients)
                 .HasForeignKey(d => d.GroceriesIdFoodItem)
@@ -115,7 +89,7 @@ public partial class LifeWithFoodDbContext : DbContext
                 .IsRequired()
                 .IsUnicode(false)
                 .HasColumnName("location");
-            entity.Property(e => e.Quanity).HasColumnName("quanity");
+            entity.Property(e => e.Quantity).HasColumnName("quantity");
 
             entity.HasOne(d => d.GroceriesIdFoodItemNavigation).WithMany(p => p.OwnedGroceries)
                 .HasForeignKey(d => d.GroceriesIdFoodItem)

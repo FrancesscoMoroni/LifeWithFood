@@ -26,12 +26,15 @@
   <mat-card class="recipe-card">
     <mat-card-content>
       <mat-card-header>
-        <a class="nav-link text-dark" [routerLink]='["/recipe-page",item.id]'>{{item.name}}</a>
+        <a class="nav-link recipe-title" [routerLink]='["/recipe-page",item.id]'>{{item.name}}</a>
       </mat-card-header>
       <mat-card-content>
-        <p>
+        <p class="description">
           {{item.description}}
         </p>
+        <div class="star-rating">
+          <mat-icon class="fa fa-star" *ngFor="let t of [].constructor(item.score)">star</mat-icon>
+        </div>
         <div class="bottom-elements">
           <mat-icon class="time-icon" color="primary" fontIcon="alarm icon"></mat-icon>
           <div class="time"> {{item.prepTime}} min</div>

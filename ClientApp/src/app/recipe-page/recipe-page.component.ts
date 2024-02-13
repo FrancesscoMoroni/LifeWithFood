@@ -18,11 +18,11 @@ export class RecipePageComponent {
   public favorite: boolean = false;
   public recipeData = {
     'idRecipe': 0,
-    'userName': '',
+    'creatorName': '',
     'name': '',
     'description': '',
-    'createDate': Date,
-    'editDate': Date,
+    'createDate': new Date(),
+    'editDate': new Date(),
     'instruction': '',
     'prepTime': 0,
     'ratings': [{
@@ -30,7 +30,7 @@ export class RecipePageComponent {
       'idRecipe': 0,
       'score': 0,
       'comment': '',
-      'date': Date,
+      'date': new Date(),
       'userName': ''
     }],
     'tags': [{
@@ -116,7 +116,19 @@ export class RecipePageComponent {
     }
 
     if (this.ratingForm.status == "VALID") {
-      await this.recipePageService.addNewRating(newRating);
+      let anwser = await this.recipePageService.addNewRating(newRating);
+      this.recipeData.ratings.push({
+        'idRating': 0,
+        'idRecipe': 0,
+        'score': Number(newRating.score),
+        'comment': newRating.comment!,
+        'date': new Date(),
+        'userName': anwser.name
+      });
+      this.ratingForm.setValue({
+        comment: "",
+        score: 0,
+      });
     }
   }
 

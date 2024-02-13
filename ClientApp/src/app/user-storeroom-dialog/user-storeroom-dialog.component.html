@@ -8,12 +8,6 @@
       <mat-error *ngIf="storeroomForm.status">Proszę wpisać nazwę</mat-error>
     </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Termin ważności</mat-label>
-      <input type="date" matInput formControlName="expirationDate" required>
-      <mat-error *ngIf="storeroomForm.status">Proszę wpisać termin ważności</mat-error>
-    </mat-form-field>
-
     <mat-form-field *ngIf="this.data.mode">
       <mat-label>Składnik</mat-label>
       <mat-select formControlName="grocery" required>
@@ -24,14 +18,20 @@
       <mat-error *ngIf="storeroomForm.status">Proszę wybrać składnik</mat-error>
     </mat-form-field>
 
-    <div *ngIf="!this.data.mode">
-      TEST
+    <div class="ingredient-name" *ngIf="!this.data.mode">
+      {{ data.data.grocery.name }}
     </div>
 
     <mat-form-field>
       <mat-label>Ilość</mat-label>
       <input matInput formControlName="quantity" required>
       <mat-error *ngIf="storeroomForm.status">Proszę poprawnie wpisać ilość</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Termin ważności</mat-label>
+      <input type="date" matInput formControlName="expirationDate" required>
+      <mat-error *ngIf="storeroomForm.status">Proszę wpisać termin ważności</mat-error>
     </mat-form-field>
   </form>
 

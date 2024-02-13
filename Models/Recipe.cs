@@ -21,8 +21,6 @@ public partial class Recipe
 
     public int UsersIdUser { get; set; }
 
-    public virtual ICollection<Image> Images { get; set; } = new List<Image>();
-
     public virtual ICollection<ListsOfIngredient> ListsOfIngredients { get; set; } = new List<ListsOfIngredient>();
 
     public virtual ICollection<Rating> Ratings { get; set; } = new List<Rating>();

@@ -1,14 +1,30 @@
 <mat-tab-group>
-  <mat-tab label="Lista przepisów">
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon>collections_bookmark</mat-icon>
+      Lista przepisów
+    </ng-template>
     <admin-recipes-list></admin-recipes-list>
   </mat-tab>
-  <mat-tab label="Lista składników">
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon>shopping_basket</mat-icon>
+      Lista składników
+    </ng-template>
     <admin-grocery-list></admin-grocery-list>
   </mat-tab>
-  <mat-tab label="Lista tagów">
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon>assignment_ind</mat-icon>
+      Lista tagów
+    </ng-template>
     <admin-tags-list></admin-tags-list>
   </mat-tab>
-  <mat-tab label="Lista użytkowników">
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon>supervisor_account</mat-icon>
+      Lista użytkowników
+    </ng-template>
     <admin-user-list></admin-user-list>
   </mat-tab>
 </mat-tab-group>

@@ -10,28 +10,35 @@
     <mat-expansion-panel *ngFor="let l of storeroomData.locations">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          {{ l }}
+          <mat-icon class="icon">folder</mat-icon>
+          <div class="store-room-name">
+            {{ l }}
+          </div>
         </mat-panel-title>
       </mat-expansion-panel-header>
-
-      <div *ngFor="let o of storeroomData.ownedGroceries">
-        <div *ngIf="o.location == l" style="display: flex; flex-direction: row; justify-content: space-between;">
-          <div>
-            {{ o.groceriesIdFoodItemNavigation.name }}
-          </div>
-          <div>
-            {{ o.quanity }} {{ o.groceriesIdFoodItemNavigation.unit }}
-          </div>
-          <div>
-            <button mat-button (click)="editStoreroomItem(o)">
-              <mat-icon>border_color</mat-icon>
-            </button>
-            <button mat-button (click)="deleteStoreroomItem(o.idOwnedFoodItem)">
-              <mat-icon>delete</mat-icon>
-            </button>
+      <mat-grid-list cols="4" rowHeight="9:1">
+        <div *ngFor="let o of storeroomData.ownedGroceries">
+          <div *ngIf="o.location == l" class="store-room-container">
+            <mat-grid-tile>
+              {{ o.grocery.name }}
+            </mat-grid-tile>
+            <mat-grid-tile>
+              {{ o.expirationDate }}
+            </mat-grid-tile>
+            <mat-grid-tile>
+              {{ o.quantity }} {{ o.grocery.unit }}
+            </mat-grid-tile>
+            <mat-grid-tile>
+              <button mat-button (click)="editStoreroomItem(o)">
+                <mat-icon>border_color</mat-icon>
+              </button>
+              <button mat-button (click)="deleteStoreroomItem(o.idOwnedFoodItem)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </mat-grid-tile>
           </div>
         </div>
-      </div>
+      </mat-grid-list>
     </mat-expansion-panel>
    </div>
 </mat-accordion>

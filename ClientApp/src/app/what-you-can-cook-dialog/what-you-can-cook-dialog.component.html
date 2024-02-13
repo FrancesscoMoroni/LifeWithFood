@@ -1,9 +1,6 @@
 <h1 mat-dialog-title>{{ title }}</h1>
 <div mat-dialog-content>
   <form [formGroup]="filterForm" class="search-form">
-    <mat-form-field>
-      <input matInput placeholder="Mak. Przepisów" formControlName="amount">
-    </mat-form-field>
 
     <mat-form-field>
       <mat-select placeholder="Filtr" formControlName="filtr" multiple>
@@ -13,19 +10,26 @@
       </mat-select>
     </mat-form-field>
 
+    <mat-form-field>
+      <input matInput placeholder="Mak. Przepisów" formControlName="amount">
+      <mat-label>Ilość przepisów</mat-label>
+    </mat-form-field>
+
     <button mat-raised-button class="search-button" color="primary" (click)="sort()">Szukaj</button>
   </form>
-  <br>
   <div *ngFor="let item of recipes">
     <mat-card class="recipe-card">
       <mat-card-content>
         <mat-card-header>
-          <a class="nav-link text-dark" [routerLink]='["/recipe-page",item.recipeCard.id]' (click)="onCloseClick()">{{item.recipeCard.name}}</a>
+          <a class="nav-link recipe-title" [routerLink]='["/recipe-page",item.recipeCard.id]' (click)="onCloseClick()">{{item.recipeCard.name}}</a>
         </mat-card-header>
         <mat-card-content>
-          <p>
+          <pre class="description">
             {{item.recipeCard.description}}
-          </p>
+          </pre>
+          <div class="star-rating">
+            <mat-icon class="fa fa-star" *ngFor="let t of [].constructor(item.score)">star</mat-icon>
+          </div>
           <div class="bottom-elements">
             <div class="compatibility"> {{item.compatibility}} %</div>
             <mat-icon class="time-icon" color="primary" fontIcon="alarm icon"></mat-icon>
@@ -40,6 +44,7 @@
       </mat-card-content>
     </mat-card>
   </div>
+  <button mat-raised-button class="search-button" color="primary" (click)="goUp()">Do góry</button>
 </div>
 <div mat-dialog-actions>
   <button mat-raised-button color="primary" (click)="onCloseClick()">Zamknij</button>

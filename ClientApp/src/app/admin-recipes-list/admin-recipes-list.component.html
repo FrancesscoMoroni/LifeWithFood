@@ -28,48 +28,59 @@
   <button mat-raised-button class="search-button" color="primary" (click)="sortPage()">Szukaj</button>
 </form>
 
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-  <br>
-  <br>
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef> ID </th>
+    <td mat-cell *matCellDef="let element"> {{element.idRecipe}} </td>
+  </ng-container>
 
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> ID </th>
-      <td mat-cell *matCellDef="let element"> {{element.idRecipe}} </td>
-    </ng-container>
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Nazwa </th>
+    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+  </ng-container>
 
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Nazwa </th>
-      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-    </ng-container>
+  <ng-container matColumnDef="creator">
+    <th mat-header-cell *matHeaderCellDef> Twórca </th>
+    <td mat-cell *matCellDef="let element">
+      {{element.creator}}
+    </td>
+  </ng-container>
 
-    <ng-container matColumnDef="createDate">
-      <th mat-header-cell *matHeaderCellDef> Data Utworzenia </th>
-      <td mat-cell *matCellDef="let element"> {{element.createDate}} </td>
-    </ng-container>
+  <ng-container matColumnDef="prepTime">
+    <th mat-header-cell *matHeaderCellDef> Czas gotowania </th>
+    <td mat-cell *matCellDef="let element">
+      {{element.prepTime}}
+    </td>
+  </ng-container>
 
-    <ng-container matColumnDef="editDate">
-      <th mat-header-cell *matHeaderCellDef> Data Edycji </th>
-      <td mat-cell *matCellDef="let element"> {{element.editDate}} </td>
-    </ng-container>
+  <ng-container matColumnDef="createDate">
+    <th mat-header-cell *matHeaderCellDef> Data Utworzenia </th>
+    <td mat-cell *matCellDef="let element"> {{element.createDate}} </td>
+  </ng-container>
 
-    <ng-container matColumnDef="options">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let element">
-        <button mat-button color="primary" (click)="editRecipe(element)">
-          <mat-icon> border_color</mat-icon>
-        </button>
-        <button mat-button color="primary" (click)="deleteRecipe(element.idRecipe)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </ng-container>
+  <ng-container matColumnDef="editDate">
+    <th mat-header-cell *matHeaderCellDef> Data Edycji </th>
+    <td mat-cell *matCellDef="let element"> {{element.editDate}} </td>
+  </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row
-        *matRowDef="let row; columns: displayedColumns;"></tr>
+  <ng-container matColumnDef="options">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-button color="primary" (click)="editRecipe(element)">
+        <mat-icon> border_color</mat-icon>
+      </button>
+      <button mat-button color="primary" (click)="deleteRecipe(element.idRecipe)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
 
-  </table>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row
+      *matRowDef="let row; columns: displayedColumns;"></tr>
+
+</table>
 
   <mat-paginator [length]="length"
                  [pageSize]="pageSize"

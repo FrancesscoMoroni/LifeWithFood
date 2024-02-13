@@ -10,7 +10,7 @@ import { DataService } from '../services/data-service.service';
   styleUrls: ['./what-you-can-cook-dialog.component.css']
 })
 export class WhatYouCanCookDialogComponent {
-  title = "Przepisy, na które posidasz składniki";
+  title = "Przepisy, na które posiadasz składniki";
 
   filterForm = this.fb.group({
     amount: [10],
@@ -56,6 +56,11 @@ export class WhatYouCanCookDialogComponent {
     }
 
     this.whatCanYouCook(filtr);
+  }
+
+  goUp() {
+    var dialogContent = document.getElementsByClassName("mdc-dialog__content");
+    dialogContent[0].scrollTo(0, 0);
   }
 
   async whatCanYouCook(filter: WhatYouCanCookFilter) {

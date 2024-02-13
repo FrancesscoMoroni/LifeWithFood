@@ -37,6 +37,7 @@
   <ItemGroup>
     <None Remove="ClientApp\src\app\interface\Filter.ts" />
     <None Remove="ClientApp\src\app\interface\Grocery.ts" />
+    <None Remove="ClientApp\src\app\interface\Ingredient.ts" />
     <None Remove="ClientApp\src\app\interface\Recipe.ts" />
     <None Remove="ClientApp\src\app\interface\Tag.ts" />
     <None Remove="ClientApp\src\app\interface\User.ts" />
@@ -46,6 +47,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\interface\Ingredient.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="ClientApp\src\app\interface\WhatYouCanCookFilter.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

@@ -48,7 +48,7 @@ namespace LifeWithFood.Controllers
 
             try
             {
-                list = _dbcontext.Groceries.OrderBy(item => item.IdFoodItem).ToList<Grocery>();
+                list = _dbcontext.Groceries.OrderBy(item => item.Name).ToList<Grocery>();
             }
             catch
             {
@@ -76,7 +76,7 @@ namespace LifeWithFood.Controllers
 
             try
             {
-                list = _dbcontext.Tags.OrderBy(item => item.IdTag).ToList<Tag>();
+                list = _dbcontext.Tags.OrderBy(item => item.Name).ToList<Tag>();
             }
             catch
             {
@@ -94,9 +94,9 @@ namespace LifeWithFood.Controllers
         [HttpPost]
         [Route("getrecipes")]
         [Authorize]
-        public async Task<ActionResult<List<Recipe>>> GetRecipes(PaginatorDto paginatorDto)
+        public async Task<ActionResult<List<RecipeDto>>> GetRecipes(PaginatorDto paginatorDto)
         {
-            List<Recipe> pageList = new List<Recipe>();
+            List<RecipeDto> pageList = new List<RecipeDto>();
             var query = _dbcontext.Recipes.AsQueryable();
             String userName =  HttpContext.User.Identity.Name;
 
@@ -104,6 +104,7 @@ namespace LifeWithFood.Controllers
             {
                 query = _dbcontext.Recipes
                             .Include(t => t.TagsIdTags)
+                            .Include(t => t.Ratings)
                             .Include(t => t.ListsOfIngredients)
                             .ThenInclude(i => i.GroceriesIdFoodItemNavigation)
                             .Where(r => r.UsersIdUserNavigation.Login == userName)
@@ -113,7 +114,6 @@ namespace LifeWithFood.Controllers
                 {
                     query = query.Where(r => r.TagsIdTags.Any(t => paginatorDto.filtr.Contains(t.IdTag)));
                 }
-
 
                 switch (paginatorDto.sort)
                 {
@@ -145,7 +145,23 @@ namespace LifeWithFood.Controllers
                         query = query.OrderBy(r => r.IdRecipe);
                         break;
                 }
-                pageList = query.Skip(paginatorDto.PageIndex * paginatorDto.PageSize)
+
+                var queryRecipeDto = query.Select(s => new RecipeDto
+                {
+                    IdRecipe = s.IdRecipe,
+                    Name = s.Name,
+                    Description = s.Description,
+                    Instruction = s.Instruction,
+                    PrepTime = s.PrepTime,
+                    CreateDate = DateOnly.FromDateTime(s.CreateDate),
+                    EditDate = DateOnly.FromDateTime((DateTime)s.EditDate),
+                    Tags = s.TagsIdTags.ToList(),
+                    Creator = s.UsersIdUserNavigation.Login,
+                    ListsOfIngredients = s.ListsOfIngredients,
+                    Score = s.Ratings.Count != 0 ? s.Ratings.Sum(r => r.Score) / s.Ratings.Count : 0,
+                });
+           
+                pageList = queryRecipeDto.Skip(paginatorDto.PageIndex * paginatorDto.PageSize)
                             .Take(paginatorDto.PageSize).ToList();
             }
             catch
@@ -158,32 +174,32 @@ namespace LifeWithFood.Controllers
         [HttpPost]
         [Route("createnewrecipe")]
         [Authorize]
-        public async Task<ActionResult<string>> NewRecipe(RecipeDto recipeDto)
+        public async Task<ActionResult<string>> NewRecipe(RecipeEditDto recipeEditDto)
         {
             Recipe addRecipe = new Recipe();
 
             String userName = HttpContext.User.Identity.Name;
 
-            addRecipe.Name = recipeDto.Name;
-            addRecipe.Description = recipeDto.Description;
-            addRecipe.Instruction = recipeDto.Instruction;
-            addRecipe.PrepTime = recipeDto.PrepTime;
+            addRecipe.Name = recipeEditDto.Name;
+            addRecipe.Description = recipeEditDto.Description;
+            addRecipe.Instruction = recipeEditDto.Instruction;
+            addRecipe.PrepTime = recipeEditDto.PrepTime;
             addRecipe.CreateDate = DateTime.Now;
             addRecipe.EditDate = DateTime.Now;
             addRecipe.UsersIdUserNavigation = _dbcontext.Users.Where(e => e.Login == userName).FirstOrDefault();
 
-            recipeDto.tags.ForEach(tag =>
+            recipeEditDto.tags.ForEach(tag =>
             {
                 _dbcontext.Attach(tag);
                 addRecipe.TagsIdTags.Add(tag);
             });
 
-            recipeDto.ingredients.ForEach(ingredient =>
+            recipeEditDto.ingredients.ForEach(ingredient =>
             {
                 _dbcontext.Attach(ingredient.Grocery);
                 addRecipe.ListsOfIngredients.Add(new ListsOfIngredient()
                 {
-                    Quanity = ingredient.Quantity,
+                    Quantity = ingredient.Quantity,
                     GroceriesIdFoodItemNavigation = ingredient.Grocery
                 });
             });
@@ -205,64 +221,40 @@ namespace LifeWithFood.Controllers
         [HttpPost]
         [Route("editrecipe")]
         [Authorize]
-        public async Task<ActionResult<string>> EditRecipe(RecipeDto recipeDto)
+        public async Task<ActionResult<string>> EditRecipe(RecipeEditDto recipeEditDto)
         {
 
             Recipe editedRecord = _dbcontext.Recipes
                 .Include(t => t.TagsIdTags)
                 .Include(t => t.ListsOfIngredients)
                 .ThenInclude(i => i.GroceriesIdFoodItemNavigation)
-                .Where(r => r.IdRecipe == recipeDto.IdRecipe)
+                .Where(r => r.IdRecipe == recipeEditDto.IdRecipe)
                 .FirstOrDefault();
 
-            editedRecord.IdRecipe = recipeDto.IdRecipe;
-            editedRecord.Name = recipeDto.Name;
-            editedRecord.Description = recipeDto.Description;
-            editedRecord.Instruction = recipeDto.Instruction;
-            editedRecord.PrepTime = recipeDto.PrepTime;
-            editedRecord.CreateDate = recipeDto.CreateDate;
+            editedRecord.IdRecipe = recipeEditDto.IdRecipe;
+            editedRecord.Name = recipeEditDto.Name;
+            editedRecord.Description = recipeEditDto.Description;
+            editedRecord.Instruction = recipeEditDto.Instruction;
+            editedRecord.PrepTime = recipeEditDto.PrepTime;
             editedRecord.EditDate = DateTime.Now;
 
             editedRecord.TagsIdTags.Clear();
+
+            editedRecord.ListsOfIngredients.Clear();
 
             _dbcontext.SaveChanges();
 
             _dbcontext.ChangeTracker.Clear();
 
-            editedRecord.TagsIdTags = recipeDto.tags;
+            editedRecord.TagsIdTags = recipeEditDto.tags;
 
-            List<ListsOfIngredient> deleteIngredients = editedRecord.ListsOfIngredients.ToList();
-
-            recipeDto.ingredients.ForEach(ingredient =>
+            recipeEditDto.ingredients.ForEach( i =>
             {
-                ListsOfIngredient listsOfIngredient = new ListsOfIngredient()
+                editedRecord.ListsOfIngredients.Add( new ListsOfIngredient
                 {
-                    Quanity = ingredient.Quantity,
-                    GroceriesIdFoodItemNavigation = ingredient.Grocery
-                };
-
-                ListsOfIngredient editedIngredients = editedRecord.ListsOfIngredients.Where(l => l.GroceriesIdFoodItemNavigation.IdFoodItem == ingredient.Grocery.IdFoodItem).FirstOrDefault();
-
-                deleteIngredients.Remove(editedIngredients);
-
-                if (editedIngredients == null)
-                {
-                    editedRecord.ListsOfIngredients.Add(new ListsOfIngredient()
-                    {
-                        Quanity = ingredient.Quantity,
-                        GroceriesIdFoodItemNavigation = ingredient.Grocery
-                    });
-                }
-                else if (editedIngredients.Quanity != listsOfIngredient.Quanity)
-                {
-                    editedIngredients.Quanity = listsOfIngredient.Quanity;
-                }
-            });
-
-            deleteIngredients.ForEach(d =>
-            {
-                editedRecord.ListsOfIngredients.Remove(d);
-                _dbcontext.ListsOfIngredients.Remove(d);
+                    Quantity = i.Quantity,
+                    GroceriesIdFoodItemNavigation = i.Grocery
+                });
             });
 
             try
@@ -335,7 +327,7 @@ namespace LifeWithFood.Controllers
         [HttpPost]
         [Route("createnewstoreroomitem")]
         [Authorize]
-        public async Task<ActionResult<string>> NewStoreroomItem(StoreroomItemDto storeroomDto)
+        public async Task<ActionResult<string>> NewStoreroomItem(OwnedGroceryDto ownedGroceryDto)
         {
             OwnedGrocery addOwnedGrocery = new OwnedGrocery();
 
@@ -343,10 +335,11 @@ namespace LifeWithFood.Controllers
          
             try
             {
-                addOwnedGrocery.Location = storeroomDto.Location;
-                addOwnedGrocery.Quanity = storeroomDto.Quantity;
-                addOwnedGrocery.ExpirationDate = storeroomDto.ExpirationDate;
-                addOwnedGrocery.GroceriesIdFoodItemNavigation = storeroomDto.Grocery;
+                addOwnedGrocery.Location = ownedGroceryDto.Location;
+                addOwnedGrocery.Quantity = ownedGroceryDto.Quantity;
+                addOwnedGrocery.ExpirationDate = ownedGroceryDto.ExpirationDate.ToDateTime(TimeOnly.MinValue);
+                addOwnedGrocery.GroceriesIdFoodItemNavigation = _dbcontext.Groceries
+                    .Where(g => g.IdFoodItem == ownedGroceryDto.Grocery.IdFoodItem).FirstOrDefault();
 
                 _dbcontext.Users.Where(u => u.Login == userName)
                     .FirstOrDefault()
@@ -365,18 +358,18 @@ namespace LifeWithFood.Controllers
         [HttpPost]
         [Route("editstoreroomitem")]
         [Authorize]
-        public async Task<ActionResult<string>> EditStoreroomItem(StoreroomItemDto storeroomDto)
+        public async Task<ActionResult<string>> EditStoreroomItem(OwnedGroceryDto ownedGroceryDto)
         {
 
             OwnedGrocery editOwnedGrocery = new OwnedGrocery();
 
             try
             {
-                editOwnedGrocery = _dbcontext.OwnedGroceries.Where(o => o.IdOwnedFoodItem == storeroomDto.Id).FirstOrDefault();
+                editOwnedGrocery = _dbcontext.OwnedGroceries.Where(o => o.IdOwnedFoodItem == ownedGroceryDto.IdOwnedFoodItem).FirstOrDefault();
 
-                editOwnedGrocery.Quanity = storeroomDto.Quantity;
-                editOwnedGrocery.Location = storeroomDto.Location;
-                editOwnedGrocery.ExpirationDate = storeroomDto.ExpirationDate;
+                editOwnedGrocery.Quantity = ownedGroceryDto.Quantity;
+                editOwnedGrocery.Location = ownedGroceryDto.Location;
+                editOwnedGrocery.ExpirationDate = ownedGroceryDto.ExpirationDate.ToDateTime(TimeOnly.MinValue);
 
                 _dbcontext.SaveChanges();
             }
@@ -391,10 +384,10 @@ namespace LifeWithFood.Controllers
         [HttpPost]
         [Route("deletestoreroomitem")]
         [Authorize]
-        public async Task<ActionResult<string>> DeleteStoreroomItem(StoreroomItemDto storeroomDto)
+        public async Task<ActionResult<string>> DeleteStoreroomItem(OwnedGroceryDto ownedGroceryDto)
         {
 
-            OwnedGrocery deleteOwnedGrocery = _dbcontext.OwnedGroceries.Where(o => o.IdOwnedFoodItem == storeroomDto.Id).FirstOrDefault();
+            OwnedGrocery deleteOwnedGrocery = _dbcontext.OwnedGroceries.Where(o => o.IdOwnedFoodItem == ownedGroceryDto.IdOwnedFoodItem).FirstOrDefault();
 
             try
             {
@@ -416,7 +409,7 @@ namespace LifeWithFood.Controllers
         [Authorize]
         public async Task<ActionResult<StoreroomDto>> GetStoreroomItems()
         {
-            List<OwnedGrocery> storeRoomGroceries = new List<OwnedGrocery>();
+            List<OwnedGroceryDto> storeRoomGroceries = new List<OwnedGroceryDto>();
             List<string> storeRoomNames = new List<string>();
             StoreroomDto storeroomData = new StoreroomDto();
 
@@ -437,9 +430,20 @@ namespace LifeWithFood.Controllers
                 storeRoomGroceries = _dbcontext.Users
                     .Include(u => u.OwnedGroceries)
                     .ThenInclude(o => o.GroceriesIdFoodItemNavigation)
-                    .Where(u => u.Login == userName)
+                    .Where(u => u.Login == userName)                  
                     .FirstOrDefault()
                     .OwnedGroceries
+                    .Select(s => new OwnedGroceryDto {
+                        IdOwnedFoodItem = s.IdOwnedFoodItem,
+                        Location = s.Location,
+                        Quantity = s.Quantity,
+                        ExpirationDate = DateOnly.FromDateTime((DateTime)s.ExpirationDate),
+                        Grocery = new GroceryDto { 
+                            IdFoodItem = s.GroceriesIdFoodItemNavigation.IdFoodItem,
+                            Name = s.GroceriesIdFoodItemNavigation.Name,
+                            Unit = s.GroceriesIdFoodItemNavigation.Unit
+                        }
+                    })
                     .ToList();
 
                 storeroomData.Locations = storeRoomNames;
@@ -456,10 +460,10 @@ namespace LifeWithFood.Controllers
         [HttpPost]
         [Route("getfavoriterecipes")]
         [Authorize]
-        public async Task<ActionResult<List<Recipe>>> GetFavoriteRecipes(PaginatorDto paginatorDto)
+        public async Task<ActionResult<List<RecipeDto>>> GetFavoriteRecipes(PaginatorDto paginatorDto)
         {
            
-            List<Recipe> pageList = new List<Recipe>();
+            List<RecipeDto> pageList = new List<RecipeDto>();
             var query = _dbcontext.Recipes.AsQueryable();
             String userName = HttpContext.User.Identity.Name;
 
@@ -478,7 +482,6 @@ namespace LifeWithFood.Controllers
                 {
                     query = query.Where(r => r.TagsIdTags.Any(t => paginatorDto.filtr.Contains(t.IdTag)));
                 }
-
 
                 switch (paginatorDto.sort)
                 {
@@ -510,7 +513,23 @@ namespace LifeWithFood.Controllers
                         query = query.OrderBy(r => r.IdRecipe);
                         break;
                 }
-                pageList = query.Skip(paginatorDto.PageIndex * paginatorDto.PageSize)
+
+                var queryRecipeDto = query.Select(s => new RecipeDto
+                {
+                    IdRecipe = s.IdRecipe,
+                    Name = s.Name,
+                    Description = s.Description,
+                    Instruction = s.Instruction,
+                    PrepTime = s.PrepTime,
+                    CreateDate = DateOnly.FromDateTime(s.CreateDate),
+                    EditDate = DateOnly.FromDateTime((DateTime)s.EditDate),
+                    Tags = s.TagsIdTags.ToList(),
+                    Creator = s.UsersIdUserNavigation.Login,
+                    ListsOfIngredients = s.ListsOfIngredients,
+                    Score = s.Ratings.Count != 0 ? s.Ratings.Sum(r => r.Score) / s.Ratings.Count : 0,
+                });
+                
+                pageList = queryRecipeDto.Skip(paginatorDto.PageIndex * paginatorDto.PageSize)
                             .Take(paginatorDto.PageSize).ToList();
             }
             catch
@@ -548,7 +567,7 @@ namespace LifeWithFood.Controllers
         [HttpPost]
         [Authorize]
         [Route("whatcanyoucook")]
-        public async Task<ActionResult<List<RecipeIngredientDto>>> WhatCanYouCook(WhatCanYouCookDto whatCanYouCookDto)
+        public async Task<ActionResult<List<RecipeYouCanCook>>> WhatCanYouCook(WhatCanYouCookDto whatCanYouCookDto)
         {
             String userName = HttpContext.User.Identity.Name;
 
@@ -572,7 +591,7 @@ namespace LifeWithFood.Controllers
                     {
                         IdFoodItem = o.Where(t => t.GroceriesIdFoodItemNavigation.Name == o.Key).First().GroceriesIdFoodItemNavigation.IdFoodItem,
                         Name = o.Key,
-                        Quantity = o.Sum(o => o.Quanity),
+                        Quantity = o.Sum(o => o.Quantity),
                         Unit = o.Where(t => t.GroceriesIdFoodItemNavigation.Name == o.Key).First().GroceriesIdFoodItemNavigation.Unit
                     })
                     .ToList();
@@ -595,12 +614,13 @@ namespace LifeWithFood.Controllers
                             Name = r.Name,
                             Description = r.Description,
                             PrepTime = r.PrepTime,
-                            Tags = r.TagsIdTags.Select(t => new TagDto { Name = t.Name, Priority = t.Priority}).ToList()
+                            Tags = r.TagsIdTags.Select(t => new TagDto { Name = t.Name, Priority = t.Priority}).ToList(),
+                            Score = r.Ratings.Count != 0 ? r.Ratings.Sum(r => r.Score) / r.Ratings.Count : 0
                         },
                         AllIngredients = r.ListsOfIngredients.Select(l => new RecipeIngredientDto {
                                 IdFoodItem = l.GroceriesIdFoodItem,
                                 Name = l.GroceriesIdFoodItemNavigation.Name,
-                                Quantity = l.Quanity,
+                                Quantity = l.Quantity,
                                 Unit = l.GroceriesIdFoodItemNavigation.Unit
                             }).ToList()
                     })
@@ -611,17 +631,20 @@ namespace LifeWithFood.Controllers
                 allRecipes.ForEach(r =>
                 {
                     List<RecipeIngredientDto> intersectIngredients = userIngredients.Where(u => r.AllIngredients
-                                                                .Contains(r.AllIngredients
-                                                                    .Where(a => a.IdFoodItem == u.IdFoodItem).FirstOrDefault()
-                                                                 )
-                                                               )
-                                                               .Select(u => new RecipeIngredientDto {
-                                                                   IdFoodItem = u.IdFoodItem,
-                                                                   Name = u.Name,
-                                                                   Quantity = u.Quantity > r.AllIngredients.Where(a => a.IdFoodItem == u.IdFoodItem).FirstOrDefault().Quantity ? r.AllIngredients.Where(a => a.IdFoodItem == u.IdFoodItem).FirstOrDefault().Quantity : u.Quantity,
-                                                                   Unit = u.Unit
-                                                               })
-                                                               .ToList();
+                         .Contains(r.AllIngredients
+                             .Where(a => a.IdFoodItem == u.IdFoodItem).FirstOrDefault()
+                          )
+                        )
+                        .Select(u => new RecipeIngredientDto {
+                            IdFoodItem = u.IdFoodItem,
+                            Name = u.Name,
+                            Quantity = u.Quantity > r.AllIngredients.Where(a => a.IdFoodItem == u.IdFoodItem)
+                                .FirstOrDefault().Quantity ? r.AllIngredients
+                                .Where(a => a.IdFoodItem == u.IdFoodItem)
+                                .FirstOrDefault().Quantity : u.Quantity,
+                            Unit = u.Unit
+                        })
+                        .ToList();
 
                     if (!intersectIngredients.IsNullOrEmpty())
                     {

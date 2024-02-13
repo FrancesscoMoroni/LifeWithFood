@@ -23,7 +23,7 @@ namespace LifeWithFood.Controllers
 
         [HttpPost]
         [Route("getrecipe")]
-        public async Task<ActionResult<Recipe>> GetPage(IdDto id)
+        public async Task<ActionResult<RecipePageDto>> GetPage(IdDto id)
         {
             RecipePageDto recipe = null;
 
@@ -42,8 +42,8 @@ namespace LifeWithFood.Controllers
                         Description = r.Description,
                         Instruction = r.Instruction,
                         PrepTime = r.PrepTime,
-                        CreateDate = r.CreateDate,
-                        EditDate = r.EditDate,
+                        CreateDate = DateOnly.FromDateTime(r.CreateDate),
+                        EditDate = DateOnly.FromDateTime((DateTime)r.EditDate),
                         CreatorName = r.UsersIdUserNavigation.Login,
                         tags = r.TagsIdTags
                             .Select(t => new TagDto
@@ -56,7 +56,7 @@ namespace LifeWithFood.Controllers
                             .Select(l => new RecipeIngredientDto
                             {
                                 Name = l.GroceriesIdFoodItemNavigation.Name,
-                                Quantity = l.Quanity,
+                                Quantity = l.Quantity,
                                 Unit = l.GroceriesIdFoodItemNavigation.Unit
                             })
                         .ToList(),
@@ -70,7 +70,7 @@ namespace LifeWithFood.Controllers
                                 Date = r.Date
                             })
                             .ToList(),
-                        finalScore = r.Ratings.Sum(r => r.Score),
+                        finalScore = r.Ratings.Count != 0 ? r.Ratings.Sum(r => r.Score) / r.Ratings.Count : 0,
                     })
                     .FirstOrDefault();
             } catch
@@ -175,7 +175,7 @@ namespace LifeWithFood.Controllers
                 return Ok("Błąd podczas dodawania komentarza");
             }
 
-            return Ok("");
+            return Ok(new {name = userName});
         }
 
         [HttpPost]
@@ -255,7 +255,7 @@ namespace LifeWithFood.Controllers
                     .Select(i => new RecipeIngredientDto
                     {
                         Name = i.GroceriesIdFoodItemNavigation.Name,
-                        Quantity = i.Quanity,
+                        Quantity = i.Quantity,
                         Unit = i.GroceriesIdFoodItemNavigation.Unit
                     })
                     .ToList();
@@ -270,7 +270,7 @@ namespace LifeWithFood.Controllers
                     .Select(o => new RecipeIngredientDto
                     {
                         Name = o.Key,
-                        Quantity = o.Sum(o => o.Quanity),
+                        Quantity = o.Sum(o => o.Quantity),
                         Unit = o.Where(t => t.GroceriesIdFoodItemNavigation.Name == o.Key).First().GroceriesIdFoodItemNavigation.Unit
                     })
                     .ToList();

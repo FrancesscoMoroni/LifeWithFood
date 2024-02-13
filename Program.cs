@@ -17,7 +17,9 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 
 // Add database contex
 builder.Services.AddDbContext<LifeWithFoodDbContext>(options =>
-    options.UseSqlServer(config.GetConnectionString("DefaultConnection")));
+    options
+        .UseSqlServer(config.GetConnectionString("DefaultConnection"),
+            o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
 
 builder.Services.AddAuthentication().AddJwtBearer( options => {
     options.TokenValidationParameters = new TokenValidationParameters

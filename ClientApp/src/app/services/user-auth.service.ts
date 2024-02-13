@@ -52,7 +52,7 @@ export class UserAuthService {
 
     var answear: any;
 
-    answear = await this.http.post<any>(this.baseUrl + "userauthentication/userauth", authDto, { headers: { 'authorization': 'bearer ' + jwt} }).toPromise();
+    answear = await this.http.post<any>(this.baseUrl + "userauthentication/userauth", authDto, { headers: {'authorization': 'bearer ' + jwt } }).toPromise().catch(error => { console.log("Użytkownik nie zalogowany"); localStorage.removeItem('jwt') });
 
     return answear;
   }

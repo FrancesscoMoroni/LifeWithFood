@@ -9,5 +9,8 @@ namespace LifeWithFood.DTO
         public string Description { get; set; }
         public int? PrepTime { get; set; }
         public List<TagDto> Tags { get; set; }
+        public int? Score { get; set; }
+        public int? SumScore { get; set; }
+        public DateTime CreateDate { get; set; }
     }
 }

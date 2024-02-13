@@ -9,7 +9,8 @@ export interface DialogData {
   data: {
     location: string,
     expirationDate: string,
-    quanity: number,
+    quantity: number,
+    grocery: any,
     idOwnedFoodItem: number
   }
 }
@@ -42,11 +43,10 @@ export class UserStoreroomDialogComponent {
 
       this.storeroomForm.setValue({
         location: data.data.location,
-        quantity: data.data.quanity.toString(),
+        quantity: data.data.quantity.toString(),
         grocery: null,
         expirationDate: data.data.expirationDate.slice(0, 10)
       });
-
       this.okButtonName = 'Edytuj';
       this.title = 'Edytuj produkt';
     }
@@ -74,7 +74,7 @@ export class UserStoreroomDialogComponent {
       && !this.data.mode) {
 
       var editStoreItem = {
-        id: this.data.data.idOwnedFoodItem,
+        idOwnedFoodItem: this.data.data.idOwnedFoodItem,
         location: this.storeroomForm.value.location,
         quantity: this.storeroomForm.value.quantity,
         expirationDate: this.storeroomForm.value.expirationDate

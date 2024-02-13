@@ -56,8 +56,7 @@ export class UserRecipeDialogComponent {
       this.okButtonName = 'Utwórz Nowy';
       this.title = 'Nowy Przepis';
     } else {
-      console.log(data);
-      data.recipe.tagsIdTags.forEach(t => {
+      data.recipe.tags.forEach(t => {
         this.tagsData.push({
           idTag: t.idTag,
           priority: t.priority,
@@ -68,7 +67,7 @@ export class UserRecipeDialogComponent {
       data.recipe.listsOfIngredients.forEach(i => {
         this.ingredientsData.push({
           name: i.groceriesIdFoodItemNavigation.name,
-          quantity: i.quanity,
+          quantity: i.quantity,
           grocery: i.groceriesIdFoodItemNavigation
         });
       });
@@ -108,8 +107,6 @@ export class UserRecipeDialogComponent {
           tags: this.tagsData,
           ingredients: this.ingredientsData
         }
-
-        console.log(editRecipe);
         this.dataService.editRecipe(editRecipe);
       }
 

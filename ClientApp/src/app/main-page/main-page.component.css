@@ -3,6 +3,7 @@
   margin: 15px 30px 15px 30px;
 }
 
+
 .search-form {
   margin-top: 10px;
   margin-left: 10px;
@@ -19,6 +20,19 @@
   margin-top: 10px;
 }
 
+.recipe-title {
+  font-family: "Lato Heavy";
+  font-size: 20px;
+}
+
+.description {
+  font-family: Lato;
+  max-width: 90vw;
+  font-size: 15px;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+}
+
 .bottom-elements {
   display: flex;
   flex-direction: row;
@@ -30,11 +44,18 @@
 }
 
 .time {
+  font-family: Lato;
   margin-top: 10px;
 }
 
 .tags {
+  font-family: Lato;
   gap: 10px;
   margin-left: 15px;
   margin-bottom: 3px;
+}
+
+.star-rating {
+  font-size: 2em;
+  color: #ffc107;
 }

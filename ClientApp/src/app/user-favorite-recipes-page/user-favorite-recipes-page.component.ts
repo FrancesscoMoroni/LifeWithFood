@@ -12,7 +12,7 @@ import { DataService } from '../services/data-service.service';
   styleUrls: ['./user-favorite-recipes-page.component.css']
 })
 export class UserFavoriteRecipesPageComponent {
-  displayedColumns: string[] = ['name', 'createDate', 'editDate'];
+  displayedColumns: string[] = ['name', 'creator', 'prepTime', 'score', 'editDate'];
   dataSource = new MatTableDataSource<Recipe>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   length = 50;
@@ -45,7 +45,6 @@ export class UserFavoriteRecipesPageComponent {
       priority: 0
     }
   }];
-  ;
 
   constructor(private fb: FormBuilder, private dataService: DataService) {
     this.getNumberOfRecipes();

@@ -1,3 +1,12 @@
+.store-room-name {
+    font-family: "Lato Heavy";
+    font-size: 20px;
+}
+
+.icon {
+    margin-bottom: 2px;
+}
+
 .buttons {
   display: flex;
   flex-direction: row;

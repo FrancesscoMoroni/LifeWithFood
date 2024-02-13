@@ -14,7 +14,7 @@ import { UserRecipeDialogComponent } from '../user-recipe-dialog/user-recipe-dia
   styleUrls: ['./user-recipes-page.component.css']
 })
 export class UserRecipesPageComponent {
-  displayedColumns: string[] = ['name', 'createDate', 'editDate', 'options'];
+  displayedColumns: string[] = ['name', 'creator','prepTime', 'score','createDate', 'editDate', 'options'];
   dataSource = new MatTableDataSource<Recipe>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   length = 50;
@@ -99,14 +99,14 @@ export class UserRecipesPageComponent {
       createDate: new Date,
       editDate: new Date,
       creator: '',
-      tagsIdTags: [{
+      tags: [{
         idTag: 0,
         name: '',
         priority: 0
       }],
       listsOfIngredients: [{
         name: '',
-        quanity: 0,
+        quantity: 0,
         groceriesIdFoodItemNavigation: Object
       }]
     };

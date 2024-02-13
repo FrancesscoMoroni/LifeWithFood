@@ -57,7 +57,7 @@ export class AdminRecipeDialogComponent {
       this.okButtonName = 'Utwórz Nowy';
       this.title = 'Nowy Przepis';
     } else {
-      data.recipe.tagsIdTags.forEach(t => {
+      data.recipe.tags.forEach(t => {
         this.tagsData.push({
           idTag: t.idTag,
           priority: t.priority,
@@ -68,7 +68,7 @@ export class AdminRecipeDialogComponent {
       data.recipe.listsOfIngredients.forEach(i => {
         this.ingredientsData.push({
           name: i.groceriesIdFoodItemNavigation.name,
-          quantity: i.quanity,
+          quantity: i.quantity,
           grocery: i.groceriesIdFoodItemNavigation    
         });
       });
@@ -97,7 +97,6 @@ export class AdminRecipeDialogComponent {
 
         this.adminDataService.createNewRecipe(newRecipe);
       } else {
-
         var editRecipe = {
           idRecipe: this.data.recipe.idRecipe,
           name: this.recipeForm.value.name,
@@ -115,9 +114,9 @@ export class AdminRecipeDialogComponent {
       this.dialogRef.close();
     }
   }
+
   editIngredient(ingredient: Ingredients) {
     const dialogRef = this.dialog.open(AddIngredientDialogComponent, { data: { mode: false, ingredient: ingredient } });
-
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         let foundElement = this.ingredientsData.find(e => e.grocery.idFoodItem == result.grocery.idFoodItem);

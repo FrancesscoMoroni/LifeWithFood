@@ -9,7 +9,7 @@ public partial class ListsOfIngredient
 
     public int RecipesIdRecipe { get; set; }
 
-    public int Quanity { get; set; }
+    public int Quantity { get; set; }
 
     public virtual Grocery GroceriesIdFoodItemNavigation { get; set; }
 

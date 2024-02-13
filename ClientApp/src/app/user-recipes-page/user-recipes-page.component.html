@@ -38,6 +38,25 @@
     </td>
   </ng-container>
 
+  <ng-container matColumnDef="creator">
+    <th mat-header-cell *matHeaderCellDef> Twórca </th>
+    <td mat-cell *matCellDef="let element">
+      {{element.creator}}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="prepTime">
+    <th mat-header-cell *matHeaderCellDef> Czas gotowania </th>
+    <td mat-cell *matCellDef="let element">
+      {{element.prepTime}}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="score">
+    <th mat-header-cell *matHeaderCellDef> Ocena </th>
+    <td mat-cell *matCellDef="let element"> {{element.score}} </td>
+  </ng-container>
+
   <ng-container matColumnDef="createDate">
     <th mat-header-cell *matHeaderCellDef> Data Utworzenia </th>
     <td mat-cell *matCellDef="let element"> {{element.createDate}} </td>

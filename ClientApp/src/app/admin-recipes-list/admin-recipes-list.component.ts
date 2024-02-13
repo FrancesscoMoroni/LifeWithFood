@@ -16,7 +16,7 @@ import { YesNoDialogComponent } from '../yes-no-dialog/yes-no-dialog.component';
   styleUrls: ['./admin-recipes-list.component.css']
 })
 export class AdminRecipesListComponent {
-  displayedColumns: string[] = ['id', 'name', 'createDate', 'editDate', 'options'];
+  displayedColumns: string[] = ['id', 'name', 'creator', 'prepTime','createDate', 'editDate', 'options'];
   dataSource = new MatTableDataSource<Recipe>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   length = 50;
@@ -101,14 +101,14 @@ export class AdminRecipesListComponent {
       createDate: new Date,
       editDate: new Date,
       creator: '',
-      tagsIdTags: [{
+      tags: [{
         idTag: 0,
         name: '',
         priority: 0
       }],
       listsOfIngredients: [{
         name: '',
-        quanity: 0,
+        quantity: 0,
         groceriesIdFoodItemNavigation: Object
       }]
     };
@@ -135,6 +135,9 @@ export class AdminRecipesListComponent {
 
   openDialog(mode: boolean, recipe: Recipe): void {
     const dialogRef = this.dialog.open(AdminRecipeDialogComponent, { width: '650px', data: { mode: mode, recipe: recipe } });
+    dialogRef.afterClosed().subscribe(result => {
+      this.refreshTable();
+    });
   }
 
   deleteRecipe(id: number) {

@@ -28,7 +28,7 @@ export class AdminUserDialogComponent {
     login: [this.data.user.login, Validators.required],
     password: [this.data.user.password, Validators.required],
     name: [this.data.user.name, Validators.required],
-    role: ['Użytkownik', Validators.required]
+    role: ['', Validators.required]
   });
 
   constructor(private fb: FormBuilder, public dialogRef: MatDialogRef<AdminUserDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private adminDataService: AdminDataService) {

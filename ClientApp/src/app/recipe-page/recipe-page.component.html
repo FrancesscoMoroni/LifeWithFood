@@ -1,17 +1,24 @@
 <div class="page-content">
-  <h1>
+  <h1 class="title">
     {{ recipeData.name }}
 
     <button *ngIf="role != 0" mat-mini-fab class="button-favorite" color="primary" (click)="makeFavorite(idRecipe)">
       <mat-icon [class]="iconClass">favorite</mat-icon>
     </button>
   </h1>
+  <div class="tags">
+    <mat-chip-set color="primary" *ngFor="let t of recipeData.tags">
+      <mat-chip>{{t.name}}</mat-chip>
+    </mat-chip-set>
+  </div>
   <p class="user-date">
-    {{ recipeData.userName }} {{ recipeData.createDate }}
+    Autor: {{ recipeData.creatorName }}
+    Utworzone: {{ recipeData.createDate }}
+    Edytowane:  {{ recipeData.editDate }}
   </p>
 
-  <p>
-    Czas przygotowania: {{ recipeData.prepTime }} min
+  <p class="star-rating" *ngIf="recipeData.finalScore != 0">
+    <mat-icon class="stars" *ngFor="let t of [].constructor(recipeData.finalScore)">star</mat-icon>
   </p>
 
   <p class="description">
@@ -21,10 +28,12 @@
   <p class="instruction">
     {{ recipeData.instruction }}
   </p>
-  <div>Lista składników:</div>
+  <div class="ingredients-title">Lista składników:</div>
   <ul *ngFor="let i of recipeData.ingredients">
     <li>
-      {{ i.name }}: {{ i.quantity }} {{ i.unit }}
+      <div class="ingredients">
+        {{ i.name }}: {{ i.quantity }} {{ i.unit }}
+      </div>
     </li>
   </ul>
 
@@ -49,8 +58,9 @@
 
   <mat-form-field>
     <mat-label>Komentarz</mat-label>
-    <textarea matInput placeholder="Komentarz" formControlName="comment" required></textarea>
+    <textarea matInput #input placeholder="Komentarz" formControlName="comment" required maxlength="200"></textarea>
     <mat-error *ngIf="ratingForm.status">Proszę wpisać komentarz</mat-error>
+    <mat-hint align="end">{{input.value.length}}/200</mat-hint>
   </mat-form-field>
 
   <button mat-raised-button class="button-add-rating" color="primary" (click)="addComment()">Dodaj komentarz</button>
@@ -64,13 +74,13 @@
   <mat-card class="rating-card">
     <mat-card-content>
       <mat-card-header>
-        Ocena: {{item.score}}
+        <mat-icon class="stars" *ngFor="let t of [].constructor(item.score)">star</mat-icon>
       </mat-card-header>
       <mat-card-content>
-        <p>
-          {{ item.userName }}
+        <p class="comment-author">
+          Autor: {{ item.userName }}
         </p>
-        <p>
+        <p class="comment">
           {{item.comment}}
         </p>
       </mat-card-content>
