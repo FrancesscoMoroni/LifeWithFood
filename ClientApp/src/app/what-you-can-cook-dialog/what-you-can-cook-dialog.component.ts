@@ -65,6 +65,7 @@ export class WhatYouCanCookDialogComponent {
 
   async whatCanYouCook(filter: WhatYouCanCookFilter) {
     this.recipes = await this.dataService.whatYouCanCook(filter);
+    console.log(this.recipes);
   }
 
   onCloseClick(): void {

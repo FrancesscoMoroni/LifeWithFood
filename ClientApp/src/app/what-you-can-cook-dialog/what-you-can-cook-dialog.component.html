@@ -24,11 +24,11 @@
           <a class="nav-link recipe-title" [routerLink]='["/recipe-page",item.recipeCard.id]' (click)="onCloseClick()">{{item.recipeCard.name}}</a>
         </mat-card-header>
         <mat-card-content>
-          <pre class="description">
+          <p class="description">
             {{item.recipeCard.description}}
-          </pre>
+          </p>
           <div class="star-rating">
-            <mat-icon class="fa fa-star" *ngFor="let t of [].constructor(item.score)">star</mat-icon>
+            <mat-icon class="fa fa-star" *ngFor="let t of [].constructor(item.recipeCard.score)">star</mat-icon>
           </div>
           <div class="bottom-elements">
             <div class="compatibility"> {{item.compatibility}} %</div>
